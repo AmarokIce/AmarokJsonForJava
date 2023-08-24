@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'idea'
+    id 'maven-publish'
 }
 
 group 'club.someoneice.json'
@@ -10,8 +11,4 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-}
-
-test {
-}
+apply from: 'maven.gradle'

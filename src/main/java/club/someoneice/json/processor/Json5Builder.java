@@ -42,7 +42,7 @@ public class Json5Builder {
                 switch (pair.getKey()) {
                     case NODE: {
                         builder.append("\r\n");
-                        builder.append(Builder.prettyPrint(Builder.asString(pair.getValue()), count));
+                        builder.append(JsonBuilder.prettyPrint(JsonBuilder.asString(pair.getValue()), count));
                         if (iterator.hasNext()) builder.append(",");
                         break;
                     }
@@ -87,8 +87,8 @@ public class Json5Builder {
                         for (int i = 0; i < count; i++) builder.append(sp);
                         builder.append(pair.getKey()).append(": ");
                         if (pair.getValue().getType() == JsonNode.NodeType.Array || pair.getValue().getType() == JsonNode.NodeType.Map) {
-                            builder.append(prettyPrintWithoutFirstLine(Builder.asString(pair.getValue()), count));
-                        } else builder.append(Builder.prettyPrint(Builder.asString(pair.getValue())));
+                            builder.append(prettyPrintWithoutFirstLine(JsonBuilder.asString(pair.getValue()), count));
+                        } else builder.append(JsonBuilder.prettyPrint(JsonBuilder.asString(pair.getValue())));
 
                         if (iterator.hasNext()) builder.append(",");
                         break;

@@ -1,0 +1,18 @@
+publishing {
+    repositories {
+        maven {
+            name = "Github Package"
+            url = uri("https://maven.pkg.github.com/amarokice/amarokjsonforjava")
+            credentials {
+                username = "AmarokIce"
+                password = ProcessEnvironment.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}

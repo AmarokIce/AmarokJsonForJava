@@ -6,7 +6,7 @@ import club.someoneice.json.node.MapNode;
 
 import java.util.Iterator;
 
-public class Builder {
+public class JsonBuilder {
     private static final String sp = "    ";
 
     public static String asString(JsonNode<?> node) {
