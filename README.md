@@ -20,7 +20,7 @@
 
 ### 从Json解析
 
-准备Json文件，或字符串，然后取得[JSON](src/main/java/club/someoneice/json/JSON.java)类即可开始。Json与Json5的内部实现基本相同，但是Json5的读取会比Json读取稍慢一些。
+准备Json文件，或字符串，然后取得[JSON](src/main/java/club/someoneice/json/JSON.java)类即可开始。此处的Json与Json5的解析器内部实现基本相同，但是Json5的读取会比Json读取稍慢一些。
 
 ```java
 JSON json = JSON.json;
