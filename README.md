@@ -29,7 +29,7 @@ JSON json5 = JSON.json5;
 
 通过parse方法取得JsonNode或Class实例：
 ```java
-// 通常可以直接转型为MapNode或ListNode。
+// 通常可以直接转型为MapNode或ArrayNode。
 JsonNode node = json.parse(file);
 
 // 会自动将参数传入变量。
