@@ -26,7 +26,7 @@ public final class JSON {
     }
 
     public JsonNode<?> parse(InputStream inputStream, boolean shouldClose) {
-        JsonParser processor = new JsonParser(inputStream, shouldClose);
+        JsonParser processor = new JsonParser(inputStream, shouldClose, this.isJson5);
         return processor.getNodeWithTypeUnknown();
     }
 

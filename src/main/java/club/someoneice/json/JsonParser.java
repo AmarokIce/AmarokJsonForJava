@@ -19,12 +19,38 @@ public class JsonParser {
         else this.json5processor(file);
     }
 
-    JsonParser(InputStream stream, boolean shouldClose) {
+    JsonParser(InputStream stream, boolean shouldClose, boolean isJson5) {
         try {
-            this.raw = shouldClose ? streamReader(stream) : streamReaderWithoutClose(stream);
+            this.raw = isJson5 ? (shouldClose ? streamReader(stream) : streamReaderWithoutClose(stream))
+            : (shouldClose ? json5ProcessorStreamWithClose(stream) : json5processor(stream));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    String json5ProcessorStreamWithClose(InputStream stream) throws IOException {
+        String rawS = json5processor(stream);
+        stream.close();
+
+        return rawS;
+    }
+
+    String json5processor(InputStream stream) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        InputStreamReader in = new InputStreamReader(stream);
+        BufferedReader reader = new BufferedReader(in);
+        while (reader.ready()) {
+            String text = reader.readLine();
+
+            if (text.contains("//")) {
+                builder.append(text, 0, text.indexOf("//"));
+            } else builder.append(text);
+        }
+
+        in.close();
+        reader.close();
+
+        return builder.toString();
     }
 
     void json5processor(File file) {
@@ -33,13 +59,12 @@ public class JsonParser {
                 StringBuilder builder = new StringBuilder();
                 FileReader fr = new FileReader(file);
                 BufferedReader reader = new BufferedReader(fr);
-                String text = reader.readLine();
-                while (text != null) {
+                while (reader.ready()) {
+                    String text = reader.readLine();
+
                     if (text.contains("//")) {
                         builder.append(text, 0, text.indexOf("//"));
                     } else builder.append(text);
-
-                    text = reader.readLine();
                 }
 
                 fr.close();

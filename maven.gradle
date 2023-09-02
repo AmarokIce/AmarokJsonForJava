@@ -1,7 +1,7 @@
 publishing {
     repositories {
         maven {
-            name = "Github Package"
+            name = "GithubPackage"
             url = uri("https://maven.pkg.github.com/amarokice/amarokjsonforjava")
             credentials {
                 username = "AmarokIce"
