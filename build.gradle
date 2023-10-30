@@ -1,14 +1,34 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
+    }
+}
+
 plugins {
     id 'java'
     id 'idea'
     id 'maven-publish'
 }
 
+
 group 'club.someoneice.json'
 version '1.2'
 
 repositories {
     mavenCentral()
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    archiveClassifier = 'javadoc'
 }
 
 apply from: 'maven.gradle'

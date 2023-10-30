@@ -104,11 +104,11 @@ public class JsonParser {
         StringBuilder str = new StringBuilder();
         StringBuilder key = new StringBuilder();
 
-        boolean start = false;
-        boolean value = false;
+        boolean start = false;                      /* Was a String start? True here. */
+        boolean value = false;                      /* A map's key with value? If not, true here. */
 
-        boolean anyStart = false;
-        boolean anyIsMap = false;
+        boolean anyStart = false;                   /* Was there not end? True here. */
+        boolean anyIsMap = false;                   /* Was there a map was start? True here. */
         int count = 0;
 
 
@@ -117,11 +117,9 @@ public class JsonParser {
             if (c < 15) continue;
             else if (c == 32 && !start) continue;
             else if (c == 92 && start) {
-                if (start) {
-                    str.append(c);
-                    str.append(charList[++word]);
-                    continue;
-                } else return null;
+                str.append(c);
+                str.append(charList[++word]);
+                continue;
             } else if (c == 58 && isMap && !start) {
                 key = str;
                 str = new StringBuilder();
