@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.*;
 
-// @SuppressWarnings("all")
 public final class JSON {
     private final boolean isJson5;
 
