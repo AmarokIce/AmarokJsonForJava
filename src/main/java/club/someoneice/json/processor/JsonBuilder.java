@@ -9,39 +9,52 @@ import java.util.Iterator;
 public class JsonBuilder {
     private static final String sp = "    ";
 
+    private static void whileToBuildNode(StringBuilder builder, Iterator<JsonNode<?>> itor) {
+        while (itor.hasNext()) {
+            JsonNode<?> it = itor.next();
+            if (it.getType() == JsonNode.NodeType.Array || it.getType() == JsonNode.NodeType.Map) {
+                builder.append(asString(it));
+            } else if (it.getType() == JsonNode.NodeType.String) {
+                builder.append("\"").append(it).append("\"");
+            } else builder.append(it.getObj());
+
+            if (itor.hasNext()) builder.append(",");
+        }
+    }
+
+    private static void whileToBuildString(StringBuilder builder, Iterator<String> itor, MapNode map) {
+        while (itor.hasNext()) {
+            String key = itor.next();
+            JsonNode<?> value = map.get(key);
+            builder.append(key).append(":");
+            if (value.getType() == JsonNode.NodeType.Array || value.getType() == JsonNode.NodeType.Map) {
+                builder.append(asString(value));
+            } else if (value.getType() == JsonNode.NodeType.String) {
+                builder.append("\"").append(value).append("\"");
+            } else builder.append(value.getObj());
+
+            if (itor.hasNext()) builder.append(",");
+        }
+    }
+
     public static String asString(JsonNode<?> node) {
         StringBuilder builder = new StringBuilder();
         if (node.getType() == JsonNode.NodeType.Array) {
             ArrayNode array = (ArrayNode) node;
+
             builder.append("[");
             Iterator<JsonNode<?>> itor = array.getObj().iterator();
-            while (itor.hasNext()) {
-                JsonNode<?> it = itor.next();
-                if (it.getType() == JsonNode.NodeType.Array || it.getType() == JsonNode.NodeType.Map) {
-                    builder.append(asString(it));
-                } else if (it.getType() == JsonNode.NodeType.String) {
-                    builder.append("\"").append(it).append("\"");
-                } else builder.append(it.getObj());
 
-                if (itor.hasNext()) builder.append(",");
-            }
+            whileToBuildNode(builder, itor);
+
             builder.append("]");
         } else if (node.getType() == JsonNode.NodeType.Map) {
             MapNode map = (MapNode) node;
             builder.append("{");
             Iterator<String> itor = map.getObj().keySet().iterator();
-            while (itor.hasNext()) {
-                String key = itor.next();
-                JsonNode<?> value = map.get(key);
-                builder.append(key).append(":");
-                if (value.getType() == JsonNode.NodeType.Array || value.getType() == JsonNode.NodeType.Map) {
-                    builder.append(asString(value));
-                } else if (value.getType() == JsonNode.NodeType.String) {
-                    builder.append("\"").append(value).append("\"");
-                } else builder.append(value.getObj());
 
-                if (itor.hasNext()) builder.append(",");
-            }
+            whileToBuildString(builder, itor, map);
+
             builder.append("}");
         } else if (node.getType() == JsonNode.NodeType.String) {
             builder.append("\"").append(node).append("\"");

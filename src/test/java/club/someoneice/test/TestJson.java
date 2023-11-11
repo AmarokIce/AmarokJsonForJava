@@ -55,7 +55,6 @@ public class TestJson {
         OutputStream outputStream = Files.newOutputStream(file2.toPath());
         outputStream.write(data.getBytes());
         outputStream.close();
-
     }
 
     public static class TestClass {
