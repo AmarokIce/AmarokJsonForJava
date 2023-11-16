@@ -15,8 +15,12 @@ public class JsonParser {
     }
 
     JsonParser(File file, boolean json5) {
-        if (!json5) this.raw = fileReader(file);
-        else this.json5processor(file);
+        try {
+            if (!json5) this.raw = fileReader(file);
+            else this.json5processor(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     JsonParser(InputStream stream, boolean shouldClose, boolean isJson5) {
@@ -53,53 +57,52 @@ public class JsonParser {
         return builder.toString();
     }
 
-    void json5processor(File file) {
+    private void json5processor(File file) throws IOException {
         if (file.exists() && file.isFile()) {
-            try {
-                StringBuilder builder = new StringBuilder();
-                FileReader fr = new FileReader(file);
-                BufferedReader reader = new BufferedReader(fr);
-                while (reader.ready()) {
-                    String text = reader.readLine();
+            StringBuilder builder = new StringBuilder();
+            FileReader fr = new FileReader(file);
+            BufferedReader reader = new BufferedReader(fr);
 
-                    if (text.contains("//")) {
-                        builder.append(text, 0, text.indexOf("//"));
-                    } else builder.append(text);
-                }
+            read(builder, reader);
 
-                fr.close();
-                reader.close();
+            fr.close();
+            reader.close();
 
-                this.raw = builder.toString();
-                return;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            this.raw = builder.toString();
+            return;
         }
 
         raw = "";
     }
 
+    private void read(StringBuilder builder, BufferedReader reader) throws IOException {
+        while (reader.ready()) {
+            String text = reader.readLine();
+            if (text.contains("//")) {
+                builder.append(text, 0, text.indexOf("//"));
+            } else builder.append(text);
+        }
+    }
+
     JsonNode<?> getNodeWithTypeUnknown() {
         return this.getNodeWithTypeUnknown(raw);
     }
-    JsonNode<?> getNodeWithTypeUnknown(String strRaw) {
-        while (strRaw.charAt(0) == 32) {
-            strRaw = strRaw.replaceFirst(" ", "");
+
+    JsonNode<?> getNodeWithTypeUnknownV1(String rawStr) {
+        while (rawStr.charAt(0) == 32) {
+            rawStr = rawStr.replaceFirst(" ", "");
         }
 
-        final char[] charList = strRaw.toCharArray();
+        final char[] charList = rawStr.toCharArray();
         JsonNode<?> jsonNode;
         boolean isMap = false;
-
-
 
         if (charList[0] == 91) {
             jsonNode = new ArrayNode(new ArrayList<>());
         } else if (charList[0] == 123) {
             jsonNode = new MapNode(new HashMap<>());
             isMap = true;
-        } else return tryGetNode(new StringBuilder(strRaw));
+        } else return tryGetNode(new StringBuilder(rawStr));
 
         StringBuilder str = new StringBuilder();
         StringBuilder key = new StringBuilder();
@@ -215,6 +218,210 @@ public class JsonParser {
         return null;
     }
 
+    private static final char KEY_SPACE = 32;
+    private static final char KEY_STRING = 34;
+    private static final char KEY_NEXT = 44;
+    private static final char KEY_VALUE = 58;
+    private static final char KEY_ARRAY_START = 91;
+    private static final char KEY_ARRAY_END = 93;
+    private static final char KEY_MAP_START = 123;
+    private static final char KEY_MAP_END = 125;
+
+    private JsonNode<?> getNodeWithTypeUnknown(String rawStr) {
+        rawStr = rawStr.replaceAll(" ", "").replaceAll("\n", "").replaceAll("\r", "");
+        char[] charList = rawStr.toCharArray();
+
+        if (charList[0] == KEY_ARRAY_START) {
+            return arrayNodeProcessor(charList);
+        } else if (charList[0] == KEY_MAP_START) {
+            return mapNodeProcessor(charList);
+        } else return tryGetNode(new StringBuilder(rawStr));
+    }
+
+    private ArrayNode arrayNodeProcessor(char[] charList) {
+        ArrayNode node = new ArrayNode(new ArrayList<>());
+        StringBuilder builder = new StringBuilder();
+        boolean stringStart = false;
+        for(int i = 1; i < charList.length; i++) {
+            char c = charList[i];
+
+            if (stringStart) {
+                if (c == KEY_STRING) {
+                    stringStart = false;
+                    node.add(tryGetNode(builder));
+                    builder.delete(0, builder.length());
+
+                    continue;
+                }
+                builder.append(c);
+                continue;
+            }
+
+            if (c == KEY_SPACE) continue;
+            if (c == KEY_MAP_END) throw new NullPointerException("Here are no map! But its a map 's end!");
+
+            if (c == KEY_NEXT) {
+                if (!builder.toString().isEmpty())
+                    node.add(tryGetNode(builder));
+                builder.delete(0, builder.length());
+                continue;
+            } else if (c == KEY_ARRAY_END) {
+                if (!builder.toString().isEmpty())
+                    node.add(tryGetNode(builder));
+                return node;
+            }
+
+            if (c == KEY_STRING) {
+                stringStart = true;
+                continue;
+            } else if (c == KEY_ARRAY_START) {
+                int end = findArrayEndInt(charList, i);
+                if (end == -1) throw new NullPointerException("Here are no end for this array!");
+
+                StringBuilder array = getArrayFromObject(charList, i, end);
+                node.add(arrayNodeProcessor(array.toString().toCharArray()));
+                i = end;
+                continue;
+            } else if (c == KEY_MAP_START) {
+                int end = findMapEndInt(charList, i);
+                if (end == -1) throw new NullPointerException("Here are no end for this map!");
+                StringBuilder array = getMapFromObj(charList, i, end);
+
+                node.add(mapNodeProcessor(array.toString().toCharArray()));
+                i = end;
+                continue;
+            }
+            builder.append(c);
+        }
+
+        return null;
+    }
+
+    private int findArrayEndInt(char[] charList, int start) {
+        int count = 0;
+        for (int i = start; i < charList.length; i ++) {
+            if (charList[i] == KEY_ARRAY_START) count ++;
+            if (charList[i] == KEY_ARRAY_END) {
+                if (count == 1) return i;
+                else count--;
+            }
+        }
+
+        return -1;
+    }
+
+    private StringBuilder getArrayFromObject(char[] charList, int start, int end) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = start; i < end + 1; i ++) {
+            builder.append(charList[i]);
+        }
+        return builder;
+    }
+
+    private MapNode mapNodeProcessor(char[] charList) {
+        MapNode node = new MapNode(new HashMap<>());
+
+        StringBuilder builder = new StringBuilder();
+
+        StringBuilder key = new StringBuilder();
+        JsonNode<?> valueNode = null;
+
+        boolean stringStart = false;
+        boolean keyEnd = false;
+
+        for(int i = 1; i < charList.length; i++) {
+            char c = charList[i];
+
+            if (stringStart) {
+                if (c == KEY_STRING) {
+                    stringStart = false;
+                    if (keyEnd) {
+                        valueNode = new StringNode(builder.toString());
+                        builder.delete(0, builder.length());
+                    }
+                    continue;
+                }
+
+                builder.append(c);
+                continue;
+            }
+
+            if (c == KEY_VALUE) {
+                if (keyEnd) throw new RuntimeException("What up here? Its had two value?");
+
+                key.append(builder);
+                builder.delete(0, builder.length());
+
+                keyEnd = true;
+                continue;
+            } else if (c == KEY_NEXT) {
+                if (!keyEnd) throw new RuntimeException("Its a array bro.");
+                keyEnd = false;
+
+                if (valueNode == null) valueNode = tryGetNode(builder);
+                node.put(key.toString(), valueNode);
+
+                builder.delete(0, builder.length());
+                key.delete(0, key.length());
+                valueNode = null;
+
+                continue;
+            } else if (c == KEY_MAP_END) {
+                if (!keyEnd) throw new RuntimeException("Its a array bro.");
+
+                if (valueNode == null) valueNode = tryGetNode(builder);
+                node.put(key.toString(), valueNode);
+
+                return node;
+            }
+
+            if (c == KEY_STRING) {
+                stringStart = true;
+                continue;
+            } else if (c == KEY_ARRAY_START) {
+                int end = findArrayEndInt(charList, i);
+                if (end == -1) throw new NullPointerException("Here are no end for this array!");
+                StringBuilder array = getArrayFromObject(charList, i, end);
+                valueNode = arrayNodeProcessor(array.toString().toCharArray());
+                i = end;
+                continue;
+            } else if (c == KEY_MAP_START) {
+                int end = findMapEndInt(charList, i);
+                if (end == -1) throw new NullPointerException("Here are no end for this map!");
+                StringBuilder array = getMapFromObj(charList, i, end);
+
+                valueNode = mapNodeProcessor(array.toString().toCharArray());
+                i = end;
+                continue;
+            }
+
+            builder.append(c);
+        }
+
+        return null;
+    }
+
+    private int findMapEndInt(char[] charList, int start) {
+        int count = 0;
+        for (int i = start; i < charList.length; i ++) {
+            if (charList[i] == KEY_MAP_START) count ++;
+            if (charList[i] == KEY_MAP_END) {
+                if (count == 1) return i;
+                else count--;
+            }
+        }
+
+        return -1;
+    }
+
+    private StringBuilder getMapFromObj(char[] charList, int start, int end) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = start; i < end + 1; i ++) {
+            builder.append(charList[i]);
+        }
+        return builder;
+    }
+
     JsonNode<?> tryGetNode(StringBuilder builder) {
         String str = builder.toString();
         if (str.equalsIgnoreCase("true") || str.equals("false")) {
@@ -223,9 +430,9 @@ public class JsonParser {
             NumberType number = getNumber(str);
             if (number != null)
                 switch (number) {
-                    case Int:   return new IntegerNode  (Integer.parseInt(str));
-                    case Float: return new FloatNode    (Float.parseFloat(str));
-                    case Double:return new DoubleNode   (Double.parseDouble(str));
+                    case Int    :   return new IntegerNode  (Integer.parseInt(str));
+                    case Float  :   return new FloatNode    (Float.parseFloat(str));
+                    case Double :   return new DoubleNode   (Double.parseDouble(str));
                 }
             return new StringNode(str);
         }
@@ -236,6 +443,7 @@ public class JsonParser {
     }
 
     private NumberType getNumber(String str) {
+        if (str.isEmpty()) return null;
         boolean has = false;
         boolean E = false;
         for (int i = 0; i < str.length(); i ++) {

@@ -14,7 +14,7 @@ import java.nio.file.Files;
 public class TestJson {
     static JSON json = JSON.json5;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
         File file = new File("./Json.json5");
         MapNode node = (MapNode) json.parse(file);
         System.out.println(node.get("test").getObj());
