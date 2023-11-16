@@ -30,99 +30,116 @@ public class Json5Builder {
     private String build(IJson5Bean bean, int ct) {
         StringBuilder builder = new StringBuilder();
         if (!bean.isMap()) {
-            Iterator<Pair<IJson5Bean.COMMAND, JsonNode<?>>> iterator = ((PairList<IJson5Bean.COMMAND, JsonNode<?>>) bean.getTask()).getIterator();
-            int count = 1 + ct;
-            for (int i = 0; i < count - 1; i++) builder.append(sp);
-            builder.append("[");
+            arrayBuilder(builder, ct, bean);
+        } else {
+            mapBuilder(builder, ct, bean);
+        }
 
-            while (iterator.hasNext()) {
-                Pair<IJson5Bean.COMMAND, JsonNode<?>> pair = iterator.next();
-                for (int i = 0; i < count; i++) builder.append(sp);
+        return builder.toString();
+    }
 
-                switch (pair.getKey()) {
-                    case NODE: {
-                        builder.append("\r\n");
-                        builder.append(JsonBuilder.prettyPrint(JsonBuilder.asString(pair.getValue()), count));
-                        if (iterator.hasNext()) builder.append(",");
-                        break;
-                    }
+    private void arrayBuilder(StringBuilder builder, int ct, IJson5Bean bean) {
+        Iterator<Pair<IJson5Bean.COMMAND, JsonNode<?>>> iterator = ((PairList<IJson5Bean.COMMAND, JsonNode<?>>) bean.getTask()).getIterator();
+        int count = 1 + ct;
+        for (int i = 0; i < count - 1; i++) builder.append(sp);
+        builder.append("[");
 
-                    case NOTE: {
-                        builder.append("\r\n");
-                        builder.append("//").append(pair.getValue().toString());
-                        break;
-                    }
+        while (iterator.hasNext()) {
+            Pair<IJson5Bean.COMMAND, JsonNode<?>> pair = iterator.next();
+            for (int i = 0; i < count; i++) builder.append(sp);
 
-                    case LINE: {
-                        builder.append("\r\n");
-                        break;
-                    }
-
-                    case MAP:
-                    case ARRAY: {
-                        builder.append("\r\n");
-                        builder.append(build((IJson5Bean) pair.getValue(), count));
-                        if (iterator.hasNext()) builder.append(",");
-                        break;
-                    }
-                }
-            }
+            arrayCommand(iterator, builder, pair, count);
 
             builder.append("\r\n");
             for (int i = 0; i < count - 1; i++) builder.append(sp);
             builder.append("]");
-        } else {
-            Iterator<Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>>> iterator = ((PairList<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>>) bean.getTask()).getIterator();
-            int count = 1 + ct;
+        }
+    }
 
-            for (int i = 0; i < count - 1; i++) builder.append(sp);
-            builder.append("{");
-            while (iterator.hasNext()) {
-                Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>> cmdPair = iterator.next();
-                Pair<String, JsonNode<?>> pair = cmdPair.getValue();
-                switch (cmdPair.getKey()) {
-
-                    case NODE: {
-                        builder.append("\r\n");
-                        for (int i = 0; i < count; i++) builder.append(sp);
-                        builder.append(pair.getKey()).append(": ");
-                        if (pair.getValue().getType() == JsonNode.NodeType.Array || pair.getValue().getType() == JsonNode.NodeType.Map) {
-                            builder.append(prettyPrintWithoutFirstLine(JsonBuilder.asString(pair.getValue()), count));
-                        } else builder.append(JsonBuilder.prettyPrint(JsonBuilder.asString(pair.getValue())));
-
-                        if (iterator.hasNext()) builder.append(",");
-                        break;
-                    }
-
-                    case NOTE: {
-                        builder.append("\r\n");
-                        for (int i = 0; i < count; i++) builder.append(sp);
-                        builder.append("//").append(pair.getKey());
-                        break;
-                    }
-
-                    case LINE: {
-                        builder.append("\r\n");
-                        break;
-                    }
-
-                    case MAP:
-                    case ARRAY: {
-                        builder.append("\r\n");
-                        for (int i = 0; i < count; i++) builder.append(sp);
-                        builder.append(pair.getKey()).append(": ").append(build((IJson5Bean) pair.getValue(), count));
-                        if (iterator.hasNext()) builder.append(",");
-                        break;
-                    }
-                }
+    private void arrayCommand(Iterator<Pair<IJson5Bean.COMMAND, JsonNode<?>>> iterator, StringBuilder builder, Pair<IJson5Bean.COMMAND, JsonNode<?>> pair, int count) {
+        switch (pair.getKey()) {
+            case NODE: {
+                builder.append("\r\n");
+                builder.append(JsonBuilder.prettyPrint(JsonBuilder.asString(pair.getValue()), count));
+                if (iterator.hasNext()) builder.append(",");
+                break;
             }
 
-            builder.append("\r\n");
-            for (int i = 0; i < count - 1; i++) builder.append(sp);
-            builder.append("}");
+            case NOTE: {
+                builder.append("\r\n");
+                builder.append("//").append(pair.getValue().toString());
+                break;
+            }
+
+            case LINE: {
+                builder.append("\r\n");
+                break;
+            }
+
+            case MAP:
+            case ARRAY: {
+                builder.append("\r\n");
+                builder.append(build((IJson5Bean) pair.getValue(), count));
+                if (iterator.hasNext()) builder.append(",");
+                break;
+            }
+        }
+    }
+
+    private void mapBuilder(StringBuilder builder, int ct, IJson5Bean bean) {
+        Iterator<Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>>> iterator = ((PairList<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>>) bean.getTask()).getIterator();
+        int count = 1 + ct;
+
+        for (int i = 0; i < count - 1; i++) builder.append(sp);
+        builder.append("{");
+        while (iterator.hasNext()) {
+            Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>> cmdPair = iterator.next();
+            Pair<String, JsonNode<?>> pair = cmdPair.getValue();
+
+
         }
 
-        return builder.toString();
+        builder.append("\r\n");
+        for (int i = 0; i < count - 1; i++) builder.append(sp);
+        builder.append("}");
+    }
+
+    private void mapCommand(Iterator<Pair<IJson5Bean.COMMAND, JsonNode<?>>> iterator, StringBuilder builder, Pair<IJson5Bean.COMMAND, JsonNode<?>> pair, int count) {
+        switch (pair.getKey()) {
+
+            case NODE: {
+                builder.append("\r\n");
+                for (int i = 0; i < count; i++) builder.append(sp);
+                builder.append(pair.getKey()).append(": ");
+                if (pair.getValue().getType() == JsonNode.NodeType.Array || pair.getValue().getType() == JsonNode.NodeType.Map) {
+                    builder.append(prettyPrintWithoutFirstLine(JsonBuilder.asString(pair.getValue()), count));
+                } else builder.append(JsonBuilder.prettyPrint(JsonBuilder.asString(pair.getValue())));
+
+                if (iterator.hasNext()) builder.append(",");
+                break;
+            }
+
+            case NOTE: {
+                builder.append("\r\n");
+                for (int i = 0; i < count; i++) builder.append(sp);
+                builder.append("//").append(pair.getKey());
+                break;
+            }
+
+            case LINE: {
+                builder.append("\r\n");
+                break;
+            }
+
+            case MAP:
+            case ARRAY: {
+                builder.append("\r\n");
+                for (int i = 0; i < count; i++) builder.append(sp);
+                builder.append(pair.getKey()).append(": ").append(build((IJson5Bean) pair.getValue(), count));
+                if (iterator.hasNext()) builder.append(",");
+                break;
+            }
+        }
     }
 
     public ArrayBean getArrayBean() {
@@ -211,6 +228,13 @@ public class Json5Builder {
         }
     }
 
+    private static final char KEY_NEXT = 44;
+    private static final char KEY_VALUE = 58;
+    private static final char KEY_ARRAY_START = 91;
+    private static final char KEY_ARRAY_END = 93;
+    private static final char KEY_MAP_START = 123;
+    private static final char KEY_MAP_END = 125;
+
     String prettyPrintWithoutFirstLine(String node, int ct) {
         StringBuilder builder = new StringBuilder();
         int count = ct + 1;
@@ -220,28 +244,28 @@ public class Json5Builder {
         if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
         for (int o = 1; o < charList.length; o ++) {
             char c = charList[o];
-            if (c == 44) {
+            if (c == KEY_NEXT) {
                 builder.append(c).append("\r\n");
                 if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
-            } else if (c == 91) {
+            } else if (c == KEY_ARRAY_START) {
                 builder.append(c).append("\r\n");
                 if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
                 ++count;
-            } else if (c == 93) {
+            } else if (c == KEY_ARRAY_END) {
                 --count;
                 builder.append("\r\n");
                 if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
                 builder.append(c);
-            } else if (c == 123) {
+            } else if (c == KEY_MAP_START) {
                 builder.append(c).append("\r\n");
                 if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
                 ++count;
-            } else if (c == 125) {
+            } else if (c == KEY_MAP_END) {
                 --count;
                 builder.append("\r\n");
                 if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
                 builder.append(c);
-            } else if (c == 58) {
+            } else if (c == KEY_VALUE) {
                 builder.append(c).append(" ");
             } else builder.append(c);
         }

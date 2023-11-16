@@ -88,6 +88,19 @@ public class JsonParser {
         return this.getNodeWithTypeUnknown(raw);
     }
 
+    /**
+     * @Deprecated
+     * V1会被弃用，但是会被保留。他不易于其他开发者理解与阅读。即便它跑的很好。
+     * <br />
+     * 无论我处于什么精神状态，写的代码有多烂，它总是能跑，这太奇怪了。
+     * <br />
+     * <p>
+     * V1 will be deprecated, but will be retained. It is not easy for other developers to understand and read. Even if it's running well. No matter what mental state I'm in, how bad the code is, it always runs, which is weird.
+     * </p>
+     * @param rawStr Unprocessed strings.
+     * @return The {@link JsonNode} was processed.
+     */
+    @Deprecated
     JsonNode<?> getNodeWithTypeUnknownV1(String rawStr) {
         while (rawStr.charAt(0) == 32) {
             rawStr = rawStr.replaceFirst(" ", "");
