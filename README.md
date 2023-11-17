@@ -20,6 +20,25 @@ But Jackson's size made my post-package program look bloated. In some of the sof
 
 ## Let's go start
 
+### Gradle get it
+
+[Github Package](https://github.com/AmarokIce/AmarokJsonForJava/packages/1929112)
+
+[Jitpack.io](https://jitpack.io/#AmarokIce/AmarokJsonForJava)
+
+```groove
+repositories {
+    maven {
+        url 'http://maven.snowlyicewolf.club/'
+        allowInsecureProtocol = true
+    }
+}
+
+dependencies {
+    implementation "club.someoneice.json:amarok-json-for-java:1.4"
+}
+```
+
 ### From Json
 
 Set up our Json File, Json String, and then instance the [JSON](src/main/java/club/someoneice/json/JSON.java). Any you can use Json or Json5, but don't use Json Handler to processor Json5.
