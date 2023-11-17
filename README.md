@@ -119,3 +119,8 @@ public class Main {
     }
 }
 ```
+
+# Free Software!
+Amarok's Json4J is a Free Software, as defined in the Pineapple License: if you want to sell the software you license, you should embed it in your labor, not use it directly. Even if this isn't defined as Free Software to some extent - the author doesn't care about the minutiae, if you insist on selling it.
+
+You can freely fork or contribute to Amarok's Json4J or even provide a better name to get it up and running on the Community Relay Network faster!
