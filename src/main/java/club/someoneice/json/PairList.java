@@ -1,12 +1,9 @@
 package club.someoneice.json;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
- * A list for Pairs. Why not HashMap? It will orderly the key-value.
+ * A list for Pairs. Why not {@link HashMap}? It will orderly the key-value.
  * */
 public class PairList<A, B> extends ArrayList<Pair<A, B>>{
 

@@ -1,53 +1,102 @@
 # Amarok 's Json For Java
 
-## 这是什么
-初雪冰的Json For Java是一个基于Java编写的Json解析库，能够较为准确的处理Json并内部推断Json取得的类型。
+[简体中文](README_CN.md)
 
-解析Json，Json5，以及写入到Json与Json5！
+## What is this?
+Amarok's Json For Java is a Json parsing library written in Java, which can accurately process Json and internally infer the type obtained by Json.
 
-## 为什么选择这个而不是其他Json处理库
-**Google Gson** ： Gson很好！但是Gson有时候会错误的处理类型推断，而直接使用JsonObject处理时容易陷入类型不可知的麻烦之中。大部分情况下这没有问题，但是我在编写一些基于Json解析的内容的时候迫切的需要知道用户是否输入了正确的类型并对类型进行预推断，抛出正确的错报。不断的尝试检查只会增加运行时的性能开销，给用户一种“这个软体很卡”的感受，因此我认为类型推断应该在解析时就完成。
+Processon Json, Json5, and write to the files!
 
-这么做可能会让解析速度变慢，但是这是等价的。而且Gson貌似依然不能处理Json5.
+## Why Amarok's Json4J not other?
+**Google Gson** ： Gson is great!, but Gson sometimes handles type inference incorrectly, and it's easy to get into the trouble of type agnosticism when you use JsonObject directly. Most of the time this is fine, but I am writing something based on Json parsing that I urgently need to know if the user has entered the correct type and pre-infer the type to throw the correct false positive. Constantly trying to check only increases the performance overhead of the runtime, giving the user the feeling that "this software is stuck", so I think type inference should be done at parsing time.
 
-**Jackson** : Jackson确实是我最好的选择！不仅很快，也能处理Json5！我在应对一些私人项目时除了Gson也会优先考虑Jackson。
+Doing so may make parsing slower, but it's equivalent. And Gson still doesn't seem to be able to handle Json5.
 
-但是Jackson的大小让我的打包后程序显得很臃肿。在一些被要求更轻的软体中，我会再去尝试考虑其他的库。
+**Jackson** : Jackson is really my best bet! Not only is it fast, but it can also handle Json5! I also prioritize Jackson in addition to Gson when dealing with some personal projects.
 
-**FoxSuma Json for Java** : 我将其打包在了我的Minecraft Mod Lib中，因为这个库很炫酷（它支持Json5的处理！），但是它闻起来有些个人项目化，与Gson一样容易陷入类型不可知的麻烦中。应该说，如果我的委托者希望我不使用Kotlin好让他的另一些开发者与我对接（他们可能从未尝试过Kotlin），那么每次我想要进行类型判断都需要重新进行一次Boolean，而不是通过拓展函数来框定一个配置器。
+But Jackson's size made my post-package program look bloated. In some of the software that is required to be lighter, I will try to consider other libraries.
 
-## 让我们开始
+**FoxSuma Json for Java**: I packaged it in my Minecraft Mod Lib because the library is cool (it supports Json5 processing!), but it smells a bit personal and just as easy to get into type-agnostic trouble as Gson. It should be said that if my delegator wants me not to use Kotlin so that some of his other developers can interface with me (they may never have tried Kotlin), then I need to redo Boolean every time I want to type it, rather than framing a configurator by extending functions.
 
-### 从Json解析
+## Let's go start
 
-准备Json文件，或字符串，然后取得[JSON](src/main/java/club/someoneice/json/JSON.java)类即可开始。此处的Json与Json5的解析器内部实现基本相同，但是Json5的读取会比Json读取稍慢一些。
+### From Json
+
+Set up our Json File, Json String, and then instance the [JSON](src/main/java/club/someoneice/json/JSON.java). Any you can use Json or Json5, but don't use Json Handler to processor Json5.
 
 ```java
-JSON json = JSON.json;
-JSON json5 = JSON.json5;
+JSON json = JSON.json;      // For Json
+JSON json5 = JSON.json5;    // For Json or Json5
 ```
 
-通过parse方法取得JsonNode或Class实例：
+Then parse get JsonNode or Class:
 ```java
-// 通常可以直接转型为MapNode或ArrayNode。
+// Processor to ArrayNode or MapNode which your Json started。
 JsonNode node = json.parse(file);
 
-// 会自动将参数传入变量。
+// Remap the class auto.
 TestClass test = json.tryPullAsClass(TestClass.class, file1);
 ```
 
-> 预设的JsonNode类型有 <br />
+> The default JsonNode type is: <br />
 > Null, String, Int, Float, Double, Boolean, Map, Array, Number, Long, Other
 
-JsonNode可以直接取出内部的内容，也可以通过Node的内部推断来获取类型：
+JsonNode can fetch the internal content directly, or it can get the type through the internal inference of the node:
 ```java
 JsonNode node = JsonNode.NULL;
 System.out.println(node.getType());
-// 输出Null，这是空类型的Node
+// It a null node.
 ```
 
-### 格式化到Json
+### To Json
 
-通过[JsonBuilder](src/main/java/club/someoneice/json/processor/JsonBuilder.java)#asString(JsonNode) :String 方法可以从JsonNode到String。而通过方法prettyPrint可以格式化的打印Json。
+To Json by method [JsonBuilder](src/main/java/club/someoneice/json/processor/JsonBuilder.java)#asString(JsonNode) :String ,then JsonNode will changed to Json String. And the method `prettyPrint` can make our Json String pretty.
 
-[Json5Bean](src/main/java/club/someoneice/json/processor/Json5Builder.java)允许使用流输入与注解输入，需要先实现Json5Builder后取得ArrayBean与MapBean开始输入任务流。
+[Json5Bean](src/main/java/club/someoneice/json/processor/Json5Builder.java) allow the use of stream input and annotation input, you need to implement Json5Builder first, and then obtain ArrayBean and MapBean to start importing the task stream.
+```java
+public class Main {
+    public static void main(String[] args) {
+        File file2 = new File("./NewJsonFile.json5");
+        if (!file2.exists() || !file2.isFile()) file2.createNewFile();
+        // Core of builder
+        Json5Builder builder = new Json5Builder();
+        
+        // Array builder
+        Json5Builder.ArrayBean arrayBean = builder.getArrayBean();
+        
+        // Map builder
+        Json5Builder.ObjectBean mapBean = builder.getObjectBean();
+
+        arrayBean.add(new StringNode("Test"));
+        // Yes! Another line
+        arrayBean.enterLine();
+        arrayBean.add(new StringNode("This is another Test"));
+        
+        mapBean.put("test", new StringNode("Test"));
+        // And you can make a comment for your Json5.
+        mapBean.addNote("This is a test note");
+        mapBean.put("newTest", new StringNode("This is another Test"));
+
+        MapNode map = new MapNode();
+        map.put("testInMap", new StringNode("mapTest"));
+        // Build a HashMap into the Map Builder.
+        mapBean.put("nodeMap", map);
+
+        // And put the Map Builder into the Array Builder.
+        arrayBean.addBean(mapBean);
+
+        // Finally, push our Builder.
+        builder.put(arrayBean);
+        // Now! We can get our Json String.
+        String data = builder.build();
+        
+        // Check it out.
+        System.out.println(data);
+
+        // Save the text to file.
+        OutputStream outputStream = Files.newOutputStream(file2.toPath());
+        outputStream.write(data.getBytes());
+        outputStream.close();
+    }
+}
+```

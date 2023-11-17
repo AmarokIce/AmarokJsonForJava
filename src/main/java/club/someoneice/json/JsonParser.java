@@ -150,7 +150,7 @@ public class JsonParser {
                     if (!isMap) {
                         ((ArrayNode) jsonNode).add(getNodeWithTypeUnknown(str.toString()));
                     } else {
-                        if (!value) return null;
+                        if (!value) return JsonNode.NULL;
                         ((MapNode) jsonNode).put(key.toString(), getNodeWithTypeUnknown(str.toString()));
                         value = false;
                     }
@@ -216,7 +216,7 @@ public class JsonParser {
                     continue;
                 }
 
-                if (!value) return null;
+                if (!value) return JsonNode.NULL;
 
                 ((MapNode) jsonNode).put(key.toString(), getNodeWithTypeUnknown(str.toString()));
                 return jsonNode;
@@ -228,7 +228,7 @@ public class JsonParser {
             }
         }
 
-        return null;
+        return JsonNode.NULL;
     }
 
     private static final char KEY_SPACE = 32;
@@ -337,7 +337,7 @@ public class JsonParser {
         StringBuilder builder = new StringBuilder();
 
         StringBuilder key = new StringBuilder();
-        JsonNode<?> valueNode = null;
+        JsonNode<?> valueNode = JsonNode.NULL;
 
         boolean stringStart = false;
         boolean keyEnd = false;
@@ -371,18 +371,18 @@ public class JsonParser {
                 if (!keyEnd) throw new RuntimeException("Its a array bro.");
                 keyEnd = false;
 
-                if (valueNode == null) valueNode = tryGetNode(builder);
+                if (valueNode == JsonNode.NULL) valueNode = tryGetNode(builder);
                 node.put(key.toString(), valueNode);
 
                 builder.delete(0, builder.length());
                 key.delete(0, key.length());
-                valueNode = null;
+                valueNode = JsonNode.NULL;
 
                 continue;
             } else if (c == KEY_MAP_END) {
                 if (!keyEnd) throw new RuntimeException("Its a array bro.");
 
-                if (valueNode == null) valueNode = tryGetNode(builder);
+                if (valueNode == JsonNode.NULL) valueNode = tryGetNode(builder);
                 node.put(key.toString(), valueNode);
 
                 return node;
@@ -455,6 +455,8 @@ public class JsonParser {
         Int, Float, Double
     }
 
+    private final char KEY_COUNT = 46;
+
     private NumberType getNumber(String str) {
         if (str.isEmpty()) return null;
         boolean has = false;
@@ -463,25 +465,28 @@ public class JsonParser {
             char c = str.charAt(i);
             if (c >= 48 && c <= 57) continue;
 
-            if (c == 46) {
+            if (c == KEY_COUNT) {
                 if (has) return null;
                 else has = true;
 
                 continue;
             }
 
-            if (c == 101 || c == 69) {
+            // E, e
+            if (c == 69 || c == 101) {
                 if (E) return null;
                 else E = true;
                 continue;
             }
 
+            // D, d
             if (c == 100 || c == 68) {
                 if (i == str.length() - 1)
                     return NumberType.Double;
                 else return null;
             }
 
+            // F, f
             if (c == 102 || c == 70){
                 if (i == str.length() - 1)
                     return NumberType.Float;
@@ -495,6 +500,7 @@ public class JsonParser {
     }
 
 
+    @SuppressWarnings("all")
     String fileReader(File file) {
         if (file.exists() && file.isFile()) {
             try {
@@ -508,6 +514,7 @@ public class JsonParser {
         return null;
     }
 
+    @SuppressWarnings("all")
     String streamReaderWithoutClose(InputStream stream) throws IOException {
         byte[] bytes = new byte[stream.available()];
         stream.read(bytes);
@@ -515,6 +522,7 @@ public class JsonParser {
         return new String(bytes);
     }
 
+    @SuppressWarnings("all")
     String streamReader(InputStream stream) throws IOException {
         byte[] bytes = new byte[stream.available()];
         stream.read(bytes);
