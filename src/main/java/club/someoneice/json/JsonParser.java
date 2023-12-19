@@ -85,11 +85,12 @@ public class JsonParser {
     }
 
     JsonNode<?> getNodeWithTypeUnknown() {
+        if (raw.isEmpty()) return JsonNode.NULL;
         return this.getNodeWithTypeUnknown(raw);
     }
 
     /**
-     * @Deprecated
+     * @deprecated
      * V1会被弃用，但是会被保留。他不易于其他开发者理解与阅读。即便它跑的很好。
      * <br />
      * 无论我处于什么精神状态，写的代码有多烂，它总是能跑，这太奇怪了。
