@@ -50,10 +50,10 @@ public class Json5Builder {
 
             arrayCommand(iterator, builder, pair, count);
 
-            builder.append("\r\n");
             for (int i = 0; i < count - 1; i++) builder.append(sp);
-            builder.append("]");
         }
+        builder.append("\r\n");
+        builder.append("]");
     }
 
     private void arrayCommand(Iterator<Pair<IJson5Bean.COMMAND, JsonNode<?>>> iterator, StringBuilder builder, Pair<IJson5Bean.COMMAND, JsonNode<?>> pair, int count) {
@@ -94,9 +94,7 @@ public class Json5Builder {
         builder.append("{");
         while (iterator.hasNext()) {
             Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>> cmdPair = iterator.next();
-            Pair<String, JsonNode<?>> pair = cmdPair.getValue();
-
-
+            mapCommand(iterator, builder, cmdPair, count);
         }
 
         builder.append("\r\n");
@@ -104,16 +102,16 @@ public class Json5Builder {
         builder.append("}");
     }
 
-    private void mapCommand(Iterator<Pair<IJson5Bean.COMMAND, JsonNode<?>>> iterator, StringBuilder builder, Pair<IJson5Bean.COMMAND, JsonNode<?>> pair, int count) {
+    private void mapCommand(Iterator<Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>>> iterator, StringBuilder builder, Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>> pair, int count) {
         switch (pair.getKey()) {
 
             case NODE: {
                 builder.append("\r\n");
                 for (int i = 0; i < count; i++) builder.append(sp);
-                builder.append(pair.getKey()).append(": ");
-                if (pair.getValue().getType() == JsonNode.NodeType.Array || pair.getValue().getType() == JsonNode.NodeType.Map) {
-                    builder.append(prettyPrintWithoutFirstLine(JsonBuilder.asString(pair.getValue()), count));
-                } else builder.append(JsonBuilder.prettyPrint(JsonBuilder.asString(pair.getValue())));
+                builder.append(pair.getValue().getKey()).append(": ");
+                if (pair.getValue().getValue().getType() == JsonNode.NodeType.Array || pair.getValue().getValue().getType() == JsonNode.NodeType.Map) {
+                    builder.append(prettyPrintWithoutFirstLine(JsonBuilder.asString(pair.getValue().getValue()), count));
+                } else builder.append(JsonBuilder.prettyPrint(JsonBuilder.asString(pair.getValue().getValue())));
 
                 if (iterator.hasNext()) builder.append(",");
                 break;
@@ -122,7 +120,7 @@ public class Json5Builder {
             case NOTE: {
                 builder.append("\r\n");
                 for (int i = 0; i < count; i++) builder.append(sp);
-                builder.append("//").append(pair.getKey());
+                builder.append("//").append(pair.getValue().getKey());
                 break;
             }
 
@@ -135,7 +133,7 @@ public class Json5Builder {
             case ARRAY: {
                 builder.append("\r\n");
                 for (int i = 0; i < count; i++) builder.append(sp);
-                builder.append(pair.getKey()).append(": ").append(build((IJson5Bean) pair.getValue(), count));
+                builder.append(pair.getValue().getKey()).append(": ").append(build((IJson5Bean) pair.getValue().getValue(), count));
                 if (iterator.hasNext()) builder.append(",");
                 break;
             }
@@ -150,7 +148,7 @@ public class Json5Builder {
         return new ObjectBean();
     }
 
-    public final class ArrayBean extends AbstractNode implements IJson5Bean {
+    public static final class ArrayBean extends AbstractNode implements IJson5Bean {
         private final PairList<COMMAND, JsonNode<?>> commandSet = new PairList<>();
 
         @Override
@@ -189,7 +187,7 @@ public class Json5Builder {
         }
     }
 
-    public final class ObjectBean extends AbstractNode implements IJson5Bean {
+    public static final class ObjectBean extends AbstractNode implements IJson5Bean {
         private final PairList<COMMAND, Pair<String, JsonNode<?>>> commandSet = new PairList<>();
 
         @Override
