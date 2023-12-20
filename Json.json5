@@ -1,3 +1,17 @@
+
 {
-    test: true
+    boolean1: true,
+    boolean2: false,
+    String: "This is String",
+
+    Array: 
+    [        
+        "This is an Array"    
+    ],
+    Map: 
+    {
+        String: "This is a Map"    
+    },
+
+    //This is the comment
 }

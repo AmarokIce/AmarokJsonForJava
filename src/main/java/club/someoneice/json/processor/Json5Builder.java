@@ -29,6 +29,7 @@ public class Json5Builder {
 
     private String build(IJson5Bean bean, int ct) {
         StringBuilder builder = new StringBuilder();
+        builder.append("\r\n");
         if (!bean.isMap()) {
             arrayBuilder(builder, ct, bean);
         } else {
@@ -53,6 +54,7 @@ public class Json5Builder {
             for (int i = 0; i < count - 1; i++) builder.append(sp);
         }
         builder.append("\r\n");
+        for (int i = 0; i < count - 1; i++) builder.append(sp);
         builder.append("]");
     }
 
@@ -95,6 +97,7 @@ public class Json5Builder {
         while (iterator.hasNext()) {
             Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>> cmdPair = iterator.next();
             mapCommand(iterator, builder, cmdPair, count);
+            for (int i = 0; i < count - 1; i++) builder.append(sp);
         }
 
         builder.append("\r\n");

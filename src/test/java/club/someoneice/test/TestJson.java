@@ -21,8 +21,24 @@ public class TestJson {
         if (!file.exists() || !file.isFile()) file.createNewFile();
         Json5Builder builder = new Json5Builder();
         Json5Builder.ObjectBean mapBean = builder.getObjectBean();
+        Json5Builder.ArrayBean arrayBeanInMap = builder.getArrayBean();
+        Json5Builder.ObjectBean mapBeanInMap = builder.getObjectBean();
 
-        mapBean.put("test", new JsonNode<>(true));
+        mapBean.put("boolean1", new JsonNode<>(true));
+        mapBean.put("boolean2", new JsonNode<>(false));
+        mapBean.put("String", new JsonNode<>("This is String"));
+
+        arrayBeanInMap.add(new JsonNode<>("This is an Array"));
+        mapBeanInMap.put("String", new JsonNode<>("This is a Map"));
+
+        mapBean.enterLine();
+
+        mapBean.addBean("Array", arrayBeanInMap);
+        mapBean.addBean("Map", mapBeanInMap);
+
+        mapBean.enterLine();
+
+        mapBean.addNote("This is the comment");
         builder.put(mapBean);
         Files.write(builder.build().getBytes(), file);
     }
