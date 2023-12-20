@@ -23,6 +23,15 @@ tasks.register('javadocJar', Jar) {
     archiveClassifier = 'javadoc'
 }
 
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation "com.google.guava:guava:33.0.0-jre"
+}
+
 publishing {
     repositories {
         maven {

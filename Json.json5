@@ -1,15 +1,3 @@
 {
-  "test": "Test Text!",
-  "test2": [
-    "Test!",
-    [
-      "TestListInList!",
-      25565
-    ],
-
-    // Another Map!
-    {
-      "TestInList": "ImTestInList!"
-    }
-  ]
+    test: true
 }
