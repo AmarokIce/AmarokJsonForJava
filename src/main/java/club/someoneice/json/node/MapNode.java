@@ -7,7 +7,7 @@ import java.util.Map;
 
 @SuppressWarnings({"unused", "rawtypes", "unchecked"})
 public class MapNode extends JsonNode<Map> {
-    public MapNode(Map<String, JsonNode<?>> obj) {
+    public MapNode(Map<String, ? extends JsonNode<?>> obj) {
         super(obj);
     }
 

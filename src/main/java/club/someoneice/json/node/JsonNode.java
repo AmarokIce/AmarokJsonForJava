@@ -52,6 +52,10 @@ public class JsonNode<T> {
         return this;
     }
 
+    public JsonNode<?> copy() {
+        return new JsonNode<>(this.getObj());
+    }
+
     @Override
     public String toString() {
         return this.obj.toString();

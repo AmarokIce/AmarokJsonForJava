@@ -5,7 +5,7 @@ import java.util.List;
 
 @SuppressWarnings({"unused", "rawtypes", "unchecked"})
 public class ArrayNode extends JsonNode<List> {
-    public ArrayNode(List<JsonNode<?>> obj) {
+    public ArrayNode(List<? extends JsonNode<?>> obj) {
         super(obj);
     }
 
