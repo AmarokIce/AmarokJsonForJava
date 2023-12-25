@@ -21,6 +21,14 @@ public class Json5Builder {
         this.taskTable.add(bean);
     }
 
+    public void clearTask() {
+        this.taskTable.clear();
+    }
+
+    public boolean noTask() {
+        return this.taskTable.isEmpty();
+    }
+
     public String build() {
         StringBuilder builder = new StringBuilder();
         taskTable.forEach(it -> builder.append(build(it, 0)));
@@ -155,8 +163,18 @@ public class Json5Builder {
         private final PairList<COMMAND, JsonNode<?>> commandSet = new PairList<>();
 
         @Override
+        public Object getObj() {
+            return this.commandSet.clone();
+        }
+
+        @Override
         public boolean isMap() {
             return false;
+        }
+
+        @Override
+        public void clean() {
+            this.commandSet.clear();
         }
 
         @Override
@@ -196,6 +214,16 @@ public class Json5Builder {
         @Override
         public boolean isMap() {
             return true;
+        }
+
+        @Override
+        public Object getObj() {
+            return this.commandSet.clone();
+        }
+
+        @Override
+        public void clean() {
+            this.commandSet.clear();
         }
 
         @Override

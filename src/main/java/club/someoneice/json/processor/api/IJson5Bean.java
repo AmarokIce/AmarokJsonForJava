@@ -13,4 +13,5 @@ public interface IJson5Bean {
 
     PairList<COMMAND, ?> getTask();
     boolean isMap();
+    void clean();
 }

@@ -6,6 +6,7 @@ import club.someoneice.json.node.JsonNode;
 import club.someoneice.json.node.MapNode;
 import club.someoneice.json.node.StringNode;
 import club.someoneice.json.processor.Json5Builder;
+import com.google.common.base.Stopwatch;
 import com.google.common.io.Files;
 
 import java.io.File;
@@ -17,6 +18,8 @@ public class TestJson {
 
     public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
         File file = new File("./Json.json5");
+
+        Stopwatch watch = Stopwatch.createStarted();
 
         if (!file.exists() || !file.isFile()) file.createNewFile();
         Json5Builder builder = new Json5Builder();
@@ -41,5 +44,7 @@ public class TestJson {
         mapBean.addNote("This is the comment");
         builder.put(mapBean);
         Files.write(builder.build().getBytes(), file);
+        System.out.println(watch);
+        watch.stop();
     }
 }

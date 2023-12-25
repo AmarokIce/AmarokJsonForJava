@@ -438,8 +438,8 @@ public class JsonParser {
 
     JsonNode<?> tryGetNode(StringBuilder builder) {
         String str = builder.toString();
-        if (str.equalsIgnoreCase("true") || str.equals("false")) {
-            return new BooleanNode(Boolean.getBoolean(str));
+        if (str.equalsIgnoreCase("true") || str.equalsIgnoreCase("false")) {
+            return new BooleanNode(str.equalsIgnoreCase("true"));
         } else {
             NumberType number = getNumber(str);
             if (number != null)

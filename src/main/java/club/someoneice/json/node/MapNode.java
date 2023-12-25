@@ -40,4 +40,12 @@ public class MapNode extends JsonNode<Map> {
     public void put(Pair<String, JsonNode<?>> pair) {
         this.put(pair.getKey(), pair.getValue());
     }
+
+    public void clear() {
+        this.obj.clear();
+    }
+
+    public boolean isEmpty() {
+        return this.obj.isEmpty();
+    }
 }
