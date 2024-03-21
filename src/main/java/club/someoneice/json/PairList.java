@@ -3,7 +3,7 @@ package club.someoneice.json;
 import java.util.*;
 
 /**
- * A list for Pairs. Why not {@link HashMap}? It will orderly the key-value.
+ * A list for Pairs. Why not {@link LinkedHashMap}? It will orderly the key-value but it's a list.
  * */
 public class PairList<A, B> extends ArrayList<Pair<A, B>>{
 

@@ -25,7 +25,7 @@ public class JsonParser {
 
     JsonParser(InputStream stream, boolean shouldClose, boolean isJson5) {
         try {
-            this.raw = isJson5 ? (shouldClose ? streamReader(stream) : streamReaderWithoutClose(stream))
+            this.raw = !isJson5 ? (shouldClose ? streamReader(stream) : streamReaderWithoutClose(stream))
             : (shouldClose ? json5ProcessorStreamWithClose(stream) : json5processor(stream));
         } catch (IOException e) {
             e.printStackTrace();
@@ -462,6 +462,9 @@ public class JsonParser {
         if (str.isEmpty()) return null;
         boolean has = false;
         boolean E = false;
+
+        if (str.startsWith("-")) str = str.replace("-", "");
+
         for (int i = 0; i < str.length(); i ++) {
             char c = str.charAt(i);
             if (c >= 48 && c <= 57) continue;
@@ -501,12 +504,10 @@ public class JsonParser {
     }
 
 
-    @SuppressWarnings("all")
     String fileReader(File file) {
         if (file.exists() && file.isFile()) {
             try {
-                InputStream input = Files.newInputStream(file.toPath());
-                return streamReader(input);
+                return new String(Files.readAllBytes(file.toPath()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
