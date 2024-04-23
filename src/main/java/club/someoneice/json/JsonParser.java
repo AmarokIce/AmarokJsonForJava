@@ -93,11 +93,8 @@ public class JsonParser {
      * @deprecated
      * V1会被弃用，但是会被保留。他不易于其他开发者理解与阅读。即便它跑的很好。
      * <br />
-     * 无论我处于什么精神状态，写的代码有多烂，它总是能跑，这太奇怪了。
-     * <br />
-     * <p>
-     * V1 will be deprecated, but will be retained. It is not easy for other developers to understand and read. Even if it's running well. No matter what mental state I'm in, how bad the code is, it always runs, which is weird.
-     * </p>
+     *
+     * V1 will be deprecated, but will be retained. It is not easy for other developers to understand and read. Even if it's running well.
      * @param rawStr Unprocessed strings.
      * @return The {@link JsonNode} was processed.
      */
@@ -243,13 +240,12 @@ public class JsonParser {
 
     private JsonNode<?> getNodeWithTypeUnknown(String rawStr) {
         rawStr = rawStr.replaceAll(" ", "").replaceAll("\n", "").replaceAll("\r", "");
-        char[] charList = rawStr.toCharArray();
+        final char[] charList = rawStr.toCharArray();
+        final char c= charList[0];
 
-        if (charList[0] == KEY_ARRAY_START) {
-            return arrayNodeProcessor(charList);
-        } else if (charList[0] == KEY_MAP_START) {
-            return mapNodeProcessor(charList);
-        } else return tryGetNode(new StringBuilder(rawStr));
+        return c == KEY_ARRAY_START ? arrayNodeProcessor(charList)
+                : c == KEY_MAP_START ? mapNodeProcessor(charList)
+                : tryGetNode(new StringBuilder(rawStr));
     }
 
     private ArrayNode arrayNodeProcessor(char[] charList) {
@@ -261,13 +257,14 @@ public class JsonParser {
 
             if (stringStart) {
                 if (c == KEY_STRING) {
-                    stringStart = false;
-                    node.add(tryGetNode(builder));
-                    builder.delete(0, builder.length());
-
+                    builder.append(c);
                     continue;
                 }
-                builder.append(c);
+
+                stringStart = false;
+                node.add(tryGetNode(builder));
+                builder.delete(0, builder.length());
+
                 continue;
             }
 
@@ -278,10 +275,12 @@ public class JsonParser {
                 if (!builder.toString().isEmpty())
                     node.add(tryGetNode(builder));
                 builder.delete(0, builder.length());
+
                 continue;
             } else if (c == KEY_ARRAY_END) {
-                if (!builder.toString().isEmpty())
-                    node.add(tryGetNode(builder));
+                if (builder.toString().isEmpty()) return node;
+
+                node.add(tryGetNode(builder));
                 return node;
             }
 
@@ -289,7 +288,7 @@ public class JsonParser {
                 stringStart = true;
                 continue;
             } else if (c == KEY_ARRAY_START) {
-                int end = findArrayEndInt(charList, i);
+                int end = findArrayEnd(charList, i);
                 if (end == -1) throw new NullPointerException("Here are no end for this array!");
 
                 StringBuilder array = getArrayFromObject(charList, i, end);
@@ -297,7 +296,7 @@ public class JsonParser {
                 i = end;
                 continue;
             } else if (c == KEY_MAP_START) {
-                int end = findMapEndInt(charList, i);
+                int end = findMapEnd(charList, i);
                 if (end == -1) throw new NullPointerException("Here are no end for this map!");
                 StringBuilder array = getMapFromObj(charList, i, end);
 
@@ -311,13 +310,13 @@ public class JsonParser {
         return null;
     }
 
-    private int findArrayEndInt(char[] charList, int start) {
+    private int findArrayEnd(char[] charList, int start) {
         int count = 0;
         for (int i = start; i < charList.length; i ++) {
             if (charList[i] == KEY_ARRAY_START) count ++;
             if (charList[i] == KEY_ARRAY_END) {
                 if (count == 1) return i;
-                else count--;
+                count--;
             }
         }
 
@@ -393,14 +392,14 @@ public class JsonParser {
                 stringStart = true;
                 continue;
             } else if (c == KEY_ARRAY_START) {
-                int end = findArrayEndInt(charList, i);
+                int end = findArrayEnd(charList, i);
                 if (end == -1) throw new NullPointerException("Here are no end for this array!");
                 StringBuilder array = getArrayFromObject(charList, i, end);
                 valueNode = arrayNodeProcessor(array.toString().toCharArray());
                 i = end;
                 continue;
             } else if (c == KEY_MAP_START) {
-                int end = findMapEndInt(charList, i);
+                int end = findMapEnd(charList, i);
                 if (end == -1) throw new NullPointerException("Here are no end for this map!");
                 StringBuilder array = getMapFromObj(charList, i, end);
 
@@ -415,13 +414,13 @@ public class JsonParser {
         return null;
     }
 
-    private int findMapEndInt(char[] charList, int start) {
+    private int findMapEnd(char[] charList, int start) {
         int count = 0;
         for (int i = start; i < charList.length; i ++) {
-            if (charList[i] == KEY_MAP_START) count ++;
+            if (charList[i] == KEY_MAP_START) count++;
             if (charList[i] == KEY_MAP_END) {
                 if (count == 1) return i;
-                else count--;
+                count--;
             }
         }
 
@@ -430,26 +429,21 @@ public class JsonParser {
 
     private StringBuilder getMapFromObj(char[] charList, int start, int end) {
         StringBuilder builder = new StringBuilder();
-        for (int i = start; i < end + 1; i ++) {
-            builder.append(charList[i]);
-        }
+        for (int i = start; i < end + 1; i ++) builder.append(charList[i]);
         return builder;
     }
 
     JsonNode<?> tryGetNode(StringBuilder builder) {
         String str = builder.toString();
-        if (str.equalsIgnoreCase("true") || str.equalsIgnoreCase("false")) {
-            return new BooleanNode(str.equalsIgnoreCase("true"));
-        } else {
-            NumberType number = getNumber(str);
-            if (number != null)
-                switch (number) {
-                    case Int    :   return new IntegerNode  (Integer.parseInt(str));
-                    case Float  :   return new FloatNode    (Float.parseFloat(str));
-                    case Double :   return new DoubleNode   (Double.parseDouble(str));
-                }
-            return new StringNode(str);
-        }
+        if (str.equalsIgnoreCase("true") || str.equalsIgnoreCase("false")) return new BooleanNode(str.equalsIgnoreCase("true"));
+        NumberType number = getNumber(str);
+        if (number != null)
+            switch (number) {
+                case Int    :   return new IntegerNode  (Integer.parseInt(str));
+                case Float  :   return new FloatNode    (Float.parseFloat(str));
+                case Double :   return new DoubleNode   (Double.parseDouble(str));
+            }
+        return new StringNode(str);
     }
 
     private enum NumberType {
