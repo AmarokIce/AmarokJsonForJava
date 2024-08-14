@@ -2,7 +2,6 @@ package club.someoneice.json.node;
 
 import club.someoneice.json.api.TreeNode;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -54,7 +53,6 @@ public class ArrayNode extends JsonNode<List> implements Iterable<JsonNode<?>>, 
     }
 
     @Override
-    @Nonnull
     public Iterator<JsonNode<?>> iterator() {
         return this.obj.iterator();
     }
