@@ -8,6 +8,12 @@ import java.util.Iterator;
 
 public class JsonBuilder {
     private static final String sp = "    ";
+    private static final char KEY_NEXT = 44;
+    private static final char KEY_VALUE = 58;
+    private static final char KEY_ARRAY_START = 91;
+    private static final char KEY_ARRAY_END = 93;
+    private static final char KEY_MAP_START = 123;
+    private static final char KEY_MAP_END = 125;
 
     private static void whileToBuildNode(StringBuilder builder, Iterator<JsonNode<?>> itor) {
         while (itor.hasNext()) {
@@ -63,44 +69,36 @@ public class JsonBuilder {
         return builder.toString();
     }
 
-
     public static String prettyPrint(String node) {
         return prettyPrint(node, 0);
     }
-
-    private static final char KEY_NEXT = 44;
-    private static final char KEY_VALUE = 58;
-    private static final char KEY_ARRAY_START = 91;
-    private static final char KEY_ARRAY_END = 93;
-    private static final char KEY_MAP_START = 123;
-    private static final char KEY_MAP_END = 125;
 
     public static String prettyPrint(String node, int ct) {
         StringBuilder builder = new StringBuilder();
         int count = ct;
         char[] charList = node.toCharArray();
-        if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
+        if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
         for (char c : charList) {
             if (c == KEY_NEXT) {
                 builder.append(c).append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
+                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
             } else if (c == KEY_ARRAY_START) {
                 builder.append(c).append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
+                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
                 ++count;
             } else if (c == KEY_ARRAY_END) {
                 --count;
                 builder.append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
+                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
                 builder.append(c);
             } else if (c == KEY_MAP_START) {
                 builder.append(c).append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
+                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
                 ++count;
             } else if (c == KEY_MAP_END) {
                 --count;
                 builder.append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
+                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
                 builder.append(c);
             } else if (c == KEY_VALUE) {
                 builder.append(c).append(" ");

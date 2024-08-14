@@ -1,12 +1,14 @@
 package club.someoneice.json.node;
 
 import club.someoneice.json.Pair;
+import club.someoneice.json.api.TreeNode;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings({"unused", "rawtypes", "unchecked"})
-public class MapNode extends JsonNode<Map> {
+public class MapNode extends JsonNode<Map> implements TreeNode<Pair<String, JsonNode<?>>> {
     public MapNode(Map<String, ? extends JsonNode<?>> obj) {
         super(obj);
     }
@@ -23,6 +25,13 @@ public class MapNode extends JsonNode<Map> {
     @Override
     public Map<String, JsonNode<?>> getObj() {
         return (Map<String, JsonNode<?>>) super.getObj();
+    }
+
+    @Override
+    public void addChild(Pair<String, JsonNode<?>>... child) {
+        Arrays.stream(child).forEach(it -> {
+            this.put(it.getKey(), it.getValue());
+        });
     }
 
     public JsonNode<?> get(String key) {

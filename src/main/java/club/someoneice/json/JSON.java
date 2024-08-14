@@ -7,14 +7,16 @@ import club.someoneice.json.node.MapNode;
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 @SuppressWarnings("unused")
 public final class JSON {
-    private final boolean isJson5;
-
-    public static JSON json  = new JSON(false);
+    public static JSON json = new JSON(false);
     public static JSON json5 = new JSON(true);
+    private final boolean isJson5;
 
     private JSON(boolean isJson5) {
         this.isJson5 = isJson5;
@@ -65,7 +67,7 @@ public final class JSON {
         return tryPullAsClass(clazz, jsonMap);
     }
 
-    public <T> T tryPullAsClass(Class<? extends T> clazz, MapNode jsonMap) throws InstantiationException, IllegalAccessException{
+    public <T> T tryPullAsClass(Class<? extends T> clazz, MapNode jsonMap) throws InstantiationException, IllegalAccessException {
         T targetClass = clazz.newInstance();
         Field[] fields = targetClass.getClass().getDeclaredFields();
 
@@ -80,23 +82,15 @@ public final class JSON {
 
     public <T> List<T> tryPullAsClassList(Class<? extends T> clazz, String str) throws InstantiationException, IllegalAccessException {
         JsonNode<?> jsonNode = this.parse(str);
-        if (jsonNode.getType() == JsonNode.NodeType.Map)
-            return Collections.singletonList(tryPullAsClass(clazz, (MapNode) jsonNode));
-        else if (jsonNode.getType() != JsonNode.NodeType.Array)
-            return null;
-
-        ArrayNode jsonList = tryPullArrayOrEmpty(jsonNode);
-
-        List<T> clazzList = new ArrayList<>();
-        for (JsonNode<?> node : jsonList.getObj()) {
-            clazzList.add(this.tryPullAsClass(clazz, tryPullObjectOrEmpty(node)));
-        }
-
-        return clazzList;
+        return createClassList(clazz, jsonNode);
     }
 
     public <T> List<T> tryPullAsClassList(Class<? extends T> clazz, File file) throws InstantiationException, IllegalAccessException {
         JsonNode<?> jsonNode = this.parse(file);
+        return createClassList(clazz, jsonNode);
+    }
+
+    private <T> List<T> createClassList(Class<? extends T> clazz, JsonNode<?> jsonNode) throws InstantiationException, IllegalAccessException {
         if (jsonNode.getType() == JsonNode.NodeType.Map)
             return Collections.singletonList(tryPullAsClass(clazz, (MapNode) jsonNode));
         else if (jsonNode.getType() != JsonNode.NodeType.Array)

@@ -1,7 +1,9 @@
 package club.someoneice.json.node;
 
-public class AbstractNode extends JsonNode<Object> {
-    protected AbstractNode() {
+public class NullNode extends JsonNode<Object> {
+    public static final NullNode INSTANCE = new NullNode();
+
+    protected NullNode() {
         super(null);
     }
 

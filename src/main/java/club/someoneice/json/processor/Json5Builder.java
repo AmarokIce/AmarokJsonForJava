@@ -2,10 +2,10 @@ package club.someoneice.json.processor;
 
 import club.someoneice.json.Pair;
 import club.someoneice.json.PairList;
-import club.someoneice.json.node.AbstractNode;
+import club.someoneice.json.api.IJson5Bean;
 import club.someoneice.json.node.JsonNode;
+import club.someoneice.json.node.NullNode;
 import club.someoneice.json.node.StringNode;
-import club.someoneice.json.processor.api.IJson5Bean;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,7 +14,12 @@ import java.util.List;
 @SuppressWarnings({"unchecked", "unused"})
 public class Json5Builder {
     private static final String sp = "    ";
-
+    private static final char KEY_NEXT = 44;
+    private static final char KEY_VALUE = 58;
+    private static final char KEY_ARRAY_START = 91;
+    private static final char KEY_ARRAY_END = 93;
+    private static final char KEY_MAP_START = 123;
+    private static final char KEY_MAP_END = 125;
     private final List<IJson5Bean> taskTable = new ArrayList<>();
 
     public void put(IJson5Bean bean) {
@@ -159,7 +164,45 @@ public class Json5Builder {
         return new ObjectBean();
     }
 
-    public static final class ArrayBean extends AbstractNode implements IJson5Bean {
+    String prettyPrintWithoutFirstLine(String node, int ct) {
+        StringBuilder builder = new StringBuilder();
+        int count = ct + 1;
+        char[] charList = node.toCharArray();
+        builder.append(charList[0]);
+        builder.append("\r\n");
+        if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+        for (int o = 1; o < charList.length; o++) {
+            char c = charList[o];
+            if (c == KEY_NEXT) {
+                builder.append(c).append("\r\n");
+                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+            } else if (c == KEY_ARRAY_START) {
+                builder.append(c).append("\r\n");
+                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+                ++count;
+            } else if (c == KEY_ARRAY_END) {
+                --count;
+                builder.append("\r\n");
+                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+                builder.append(c);
+            } else if (c == KEY_MAP_START) {
+                builder.append(c).append("\r\n");
+                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+                ++count;
+            } else if (c == KEY_MAP_END) {
+                --count;
+                builder.append("\r\n");
+                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+                builder.append(c);
+            } else if (c == KEY_VALUE) {
+                builder.append(c).append(" ");
+            } else builder.append(c);
+        }
+
+        return builder.toString();
+    }
+
+    public static final class ArrayBean extends NullNode implements IJson5Bean {
         private final PairList<COMMAND, JsonNode<?>> commandSet = new PairList<>();
 
         @Override
@@ -193,7 +236,7 @@ public class Json5Builder {
         }
 
         public ArrayBean enterLine() {
-            this.commandSet.put(COMMAND.LINE, JsonNode.NULL);
+            this.commandSet.put(COMMAND.LINE, NullNode.INSTANCE);
             return this;
         }
 
@@ -208,7 +251,7 @@ public class Json5Builder {
         }
     }
 
-    public static final class ObjectBean extends AbstractNode implements IJson5Bean {
+    public static final class ObjectBean extends NullNode implements IJson5Bean {
         private final PairList<COMMAND, Pair<String, JsonNode<?>>> commandSet = new PairList<>();
 
         @Override
@@ -237,12 +280,12 @@ public class Json5Builder {
         }
 
         public ObjectBean addNote(String note) {
-            this.commandSet.put(COMMAND.NOTE, new Pair<>(note, JsonNode.NULL));
+            this.commandSet.put(COMMAND.NOTE, new Pair<>(note, NullNode.INSTANCE));
             return this;
         }
 
         public ObjectBean enterLine() {
-            this.commandSet.put(COMMAND.LINE, new Pair<>("null", JsonNode.NULL));
+            this.commandSet.put(COMMAND.LINE, new Pair<>("null", NullNode.INSTANCE));
             return this;
         }
 
@@ -255,50 +298,5 @@ public class Json5Builder {
             this.commandSet.put(COMMAND.MAP, new Pair<>(key, bean));
             return this;
         }
-    }
-
-    private static final char KEY_NEXT = 44;
-    private static final char KEY_VALUE = 58;
-    private static final char KEY_ARRAY_START = 91;
-    private static final char KEY_ARRAY_END = 93;
-    private static final char KEY_MAP_START = 123;
-    private static final char KEY_MAP_END = 125;
-
-    String prettyPrintWithoutFirstLine(String node, int ct) {
-        StringBuilder builder = new StringBuilder();
-        int count = ct + 1;
-        char[] charList = node.toCharArray();
-        builder.append(charList[0]);
-        builder.append("\r\n");
-        if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
-        for (int o = 1; o < charList.length; o ++) {
-            char c = charList[o];
-            if (c == KEY_NEXT) {
-                builder.append(c).append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
-            } else if (c == KEY_ARRAY_START) {
-                builder.append(c).append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
-                ++count;
-            } else if (c == KEY_ARRAY_END) {
-                --count;
-                builder.append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
-                builder.append(c);
-            } else if (c == KEY_MAP_START) {
-                builder.append(c).append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
-                ++count;
-            } else if (c == KEY_MAP_END) {
-                --count;
-                builder.append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i ++) builder.append(sp);
-                builder.append(c);
-            } else if (c == KEY_VALUE) {
-                builder.append(c).append(" ");
-            } else builder.append(c);
-        }
-
-        return builder.toString();
     }
 }
