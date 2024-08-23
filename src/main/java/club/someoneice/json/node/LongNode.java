@@ -9,4 +9,14 @@ public final class LongNode extends JsonNode<Long> {
     public NodeType getType() {
         return NodeType.Long;
     }
+
+    @Override
+    public LongNode copy() {
+        return new LongNode(obj);
+    }
+
+    @Override
+    public LongNode asTypeNode() {
+        return this;
+    }
 }

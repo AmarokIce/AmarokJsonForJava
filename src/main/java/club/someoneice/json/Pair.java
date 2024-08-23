@@ -1,8 +1,8 @@
 package club.someoneice.json;
 
 public class Pair<A, B> {
-    private final A key;
-    private final B value;
+    protected A key;
+    protected B value;
 
     public Pair(A key, B value) {
         this.key = key;
@@ -15,5 +15,13 @@ public class Pair<A, B> {
 
     public B getValue() {
         return this.value;
+    }
+
+    public void setKey(A key) {
+        this.key = key;
+    }
+
+    public void setValue(B value) {
+        this.value = value;
     }
 }

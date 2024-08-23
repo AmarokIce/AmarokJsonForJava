@@ -2,10 +2,8 @@ package club.someoneice.json.node;
 
 import club.someoneice.json.api.TreeNode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 @SuppressWarnings({"unused", "rawtypes", "unchecked"})
 public class ArrayNode extends JsonNode<List> implements Iterable<JsonNode<?>>, TreeNode<JsonNode<?>> {
@@ -52,8 +50,27 @@ public class ArrayNode extends JsonNode<List> implements Iterable<JsonNode<?>>, 
         return this.obj.isEmpty();
     }
 
+    public Stream<JsonNode<?>> stream() {
+        return this.obj.stream();
+    }
+
     @Override
     public Iterator<JsonNode<?>> iterator() {
         return this.obj.iterator();
+    }
+
+    @Override
+    public ArrayNode asTypeNode() {
+        return this;
+    }
+
+    @Override
+    public ArrayNode copy() {
+        return new ArrayNode(new ArrayList<>(this.obj));
+    }
+
+    public ArrayNode copy(List<JsonNode<?>> list) {
+        list.addAll(this.obj);
+        return new ArrayNode(list);
     }
 }

@@ -16,8 +16,19 @@ import java.util.List;
 public final class JSON {
     public static JSON json = new JSON(false);
     public static JSON json5 = new JSON(true);
+
     private final boolean isJson5;
 
+    /**
+     * 导览： <br />
+     * {@link JSON#parse(File)} 从文件读取并解析为 JsonNode。 <br />
+     * {@link JSON#parse(InputStream, boolean)} 从输入流读取并解析为 JsonNode。内建关闭流，因此请内联创建。 <br />
+     * {@link JSON#parse(String)}  从字符串解析为 JsonNode。 <br />
+     * {@link JSON#tryPullArrayOrEmpty(String)} 从字符串解析为 ArrayNode，或返回空的 ArrayNode。 <br />
+     * {@link JSON#tryPullArrayOrEmpty(JsonNode)} 从未知类型解析为 ArrayNode，或返回空的 ArrayNode。 <br />
+     * {@link JSON#tryPullObjectOrEmpty(String)}}} 从字符串解析为 MapNode，或返回空的 MapNode。 <br />
+     * {@link JSON#tryPullObjectOrEmpty(JsonNode)} 从未知类型解析为 MapNode，或返回空的 MapNode。 <br />
+     */
     private JSON(boolean isJson5) {
         this.isJson5 = isJson5;
     }
@@ -56,6 +67,8 @@ public final class JSON {
         JsonNode<?> jsonNode = this.parse(raw);
         return this.tryPullObjectOrEmpty(jsonNode);
     }
+
+    /* Damage Zoom : Don't use these on Java 12+ */
 
     public <T> T tryPullAsClass(Class<? extends T> clazz, String str) throws InstantiationException, IllegalAccessException {
         MapNode jsonMap = tryPullObjectOrEmpty(this.parse(str));

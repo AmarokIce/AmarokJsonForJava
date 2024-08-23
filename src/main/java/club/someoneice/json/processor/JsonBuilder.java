@@ -15,32 +15,14 @@ public class JsonBuilder {
     private static final char KEY_MAP_START = 123;
     private static final char KEY_MAP_END = 125;
 
-    private static void whileToBuildNode(StringBuilder builder, Iterator<JsonNode<?>> itor) {
-        while (itor.hasNext()) {
-            JsonNode<?> it = itor.next();
-            if (it.getType() == JsonNode.NodeType.Array || it.getType() == JsonNode.NodeType.Map) {
-                builder.append(asString(it));
-            } else if (it.getType() == JsonNode.NodeType.String) {
-                builder.append("\"").append(it).append("\"");
-            } else builder.append(it.getObj());
+    private JsonBuilder() {}
 
-            if (itor.hasNext()) builder.append(",");
-        }
+    public static String prettyPrint(JsonNode<?> node) {
+        return prettyPrint(asString(node));
     }
 
-    private static void whileToBuildString(StringBuilder builder, Iterator<String> itor, MapNode map) {
-        while (itor.hasNext()) {
-            String key = itor.next();
-            JsonNode<?> value = map.get(key);
-            builder.append(key).append(":");
-            if (value.getType() == JsonNode.NodeType.Array || value.getType() == JsonNode.NodeType.Map) {
-                builder.append(asString(value));
-            } else if (value.getType() == JsonNode.NodeType.String) {
-                builder.append("\"").append(value).append("\"");
-            } else builder.append(value.getObj());
-
-            if (itor.hasNext()) builder.append(",");
-        }
+    public static String prettyPrint(String node) {
+        return prettyPrint(node, 0);
     }
 
     public static String asString(JsonNode<?> node) {
@@ -69,46 +51,69 @@ public class JsonBuilder {
         return builder.toString();
     }
 
-    public static String prettyPrint(String node) {
-        return prettyPrint(node, 0);
-    }
-
     public static String prettyPrint(String node, int ct) {
         StringBuilder builder = new StringBuilder();
         int count = ct;
         char[] charList = node.toCharArray();
         if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
         for (char c : charList) {
-            if (c == KEY_NEXT) {
-                builder.append(c).append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
-            } else if (c == KEY_ARRAY_START) {
-                builder.append(c).append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
-                ++count;
-            } else if (c == KEY_ARRAY_END) {
-                --count;
-                builder.append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
-                builder.append(c);
-            } else if (c == KEY_MAP_START) {
-                builder.append(c).append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
-                ++count;
-            } else if (c == KEY_MAP_END) {
-                --count;
-                builder.append("\r\n");
-                if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
-                builder.append(c);
-            } else if (c == KEY_VALUE) {
-                builder.append(c).append(" ");
-            } else builder.append(c);
+            count = checkAndPut(builder, count, c, KEY_NEXT, sp, KEY_ARRAY_START, KEY_ARRAY_END, KEY_MAP_START, KEY_MAP_END, KEY_VALUE);
         }
 
         return builder.toString();
     }
 
-    public static String prettyPrint(JsonNode<?> node) {
-        return prettyPrint(asString(node));
+    static int checkAndPut(StringBuilder builder, int count, char c, char keyNext, String sp, char keyArrayStart, char keyArrayEnd, char keyMapStart, char keyMapEnd, char keyValue) {
+        if (c == keyNext) {
+            builder.append(c).append("\r\n");
+            if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+        } else if (c == keyArrayStart) {
+            builder.append(c).append("\r\n");
+            if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+            ++count;
+        } else if (c == keyArrayEnd) {
+            --count;
+            builder.append("\r\n");
+            if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+            builder.append(c);
+        } else if (c == keyMapStart) {
+            builder.append(c).append("\r\n");
+            if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+            ++count;
+        } else if (c == keyMapEnd) {
+            --count;
+            builder.append("\r\n");
+            if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+            builder.append(c);
+        } else if (c == keyValue) {
+            builder.append(c).append(" ");
+        } else builder.append(c);
+        return count;
+    }
+
+    private static void whileToBuildNode(StringBuilder builder, Iterator<JsonNode<?>> itor) {
+        while (itor.hasNext()) {
+            JsonNode<?> it = itor.next();
+            createAndAppend(builder, it, itor.hasNext());
+        }
+    }
+
+    private static void whileToBuildString(StringBuilder builder, Iterator<String> itor, MapNode map) {
+        while (itor.hasNext()) {
+            String key = itor.next();
+            JsonNode<?> value = map.get(key);
+            builder.append(key).append(":");
+            createAndAppend(builder, value, itor.hasNext());
+        }
+    }
+
+    private static void createAndAppend(StringBuilder builder, JsonNode<?> it, boolean b) {
+        if (it.getType() == JsonNode.NodeType.Array || it.getType() == JsonNode.NodeType.Map) {
+            builder.append(asString(it));
+        } else if (it.getType() == JsonNode.NodeType.String) {
+            builder.append("\"").append(it).append("\"");
+        } else builder.append(it.getObj());
+
+        if (b) builder.append(",");
     }
 }

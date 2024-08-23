@@ -9,4 +9,14 @@ public final class IntegerNode extends JsonNode<Integer> {
     public NodeType getType() {
         return NodeType.Int;
     }
+
+    @Override
+    public IntegerNode copy() {
+        return new IntegerNode(obj);
+    }
+
+    @Override
+    public IntegerNode asTypeNode() {
+        return this;
+    }
 }

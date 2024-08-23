@@ -3,16 +3,18 @@ package club.someoneice.test;
 import club.someoneice.json.JSON;
 import club.someoneice.json.node.JsonNode;
 import club.someoneice.json.processor.Json5Builder;
+import com.google.common.annotations.Beta;
 import com.google.common.base.Stopwatch;
 import com.google.common.io.Files;
 
 import java.io.File;
 import java.io.IOException;
 
-public class TestJson {
+@Beta
+public final class TestJson {
     static JSON json = JSON.json5;
 
-    public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws IOException {
         File file = new File("./Json.json5");
 
         Stopwatch watch = Stopwatch.createStarted();

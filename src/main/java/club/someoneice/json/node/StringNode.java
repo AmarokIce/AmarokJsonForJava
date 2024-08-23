@@ -9,4 +9,14 @@ public class StringNode extends JsonNode<String> {
     public NodeType getType() {
         return NodeType.String;
     }
+
+    @Override
+    public StringNode copy() {
+        return new StringNode(obj);
+    }
+
+    @Override
+    public StringNode asTypeNode() {
+        return this;
+    }
 }

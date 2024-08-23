@@ -4,13 +4,13 @@
     boolean2: false,
     String: "This is String",
 
-    Array: 
-    [        
-        "This is an Array"    
+    Array:
+    [
+        "This is an Array"
     ],
-    Map: 
+    Map:
     {
-        String: "This is a Map"    
+        String: "This is a Map"
     },
 
     //This is the comment

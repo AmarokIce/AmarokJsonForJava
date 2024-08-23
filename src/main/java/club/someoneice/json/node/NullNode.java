@@ -11,4 +11,17 @@ public class NullNode extends JsonNode<Object> {
     public NodeType getType() {
         return NodeType.Null;
     }
+
+    /**
+     * But why?
+     */
+    @Override
+    public NullNode copy() {
+        return INSTANCE;
+    }
+
+    @Override
+    public NullNode asTypeNode() {
+        return this;
+    }
 }

@@ -9,4 +9,14 @@ public final class BooleanNode extends JsonNode<Boolean> {
     public NodeType getType() {
         return NodeType.Boolean;
     }
+
+    @Override
+    public BooleanNode copy() {
+        return new BooleanNode(obj);
+    }
+
+    @Override
+    public BooleanNode asTypeNode() {
+        return this;
+    }
 }
