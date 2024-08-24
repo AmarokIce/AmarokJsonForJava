@@ -27,13 +27,6 @@ jobs:
           mkdir -vp docs
           cp -vrf build/docs/javadoc/
 
-      - name: Generate the sitemap
-        id: sitemap
-        uses: amarokice/generate-sitemap@v1
-        with:
-          base-url-path: https://amarokice.github.io/amarokjsonforjava
-          path-to-root: docs
-
       - name: Configure Git
         env:
           DEPLOY_PRI: ${{secrets.DEPLOY_PRI}}
