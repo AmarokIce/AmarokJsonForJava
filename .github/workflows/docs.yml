@@ -19,7 +19,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Generate docs
-        run: gradlew javadoc
+        run: .\gradlew javadoc
 
       - name: Copy to Location
         run: |
