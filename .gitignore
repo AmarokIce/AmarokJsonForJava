@@ -1,11 +1,5 @@
 # 项目排除路径
 /.gradle/
-
-/build/classes/java/main/
-/build/classes/java/test/
-/build/generated/
-/build/libs/
-/build/publications/
-/build/tmp/
-/build/classes/
 /.idea/
+
+/build/
