@@ -20,7 +20,7 @@ public final class JSON {
     private final boolean isJson5;
 
     /**
-     * 导览： <br />
+     * 导览: <br />
      * {@link JSON#parse(File)} 从文件读取并解析为 JsonNode。 <br />
      * {@link JSON#parse(InputStream, boolean)} 从输入流读取并解析为 JsonNode。内建关闭流，因此请内联创建。 <br />
      * {@link JSON#parse(String)}  从字符串解析为 JsonNode。 <br />

@@ -13,6 +13,7 @@ plugins {
 group 'club.someoneice.json'
 version '1.6'
 
+
 tasks.register('sourcesJar', Jar) {
     from sourceSets.main.allJava
     archiveClassifier = 'sources'
@@ -39,7 +40,7 @@ publishing {
             url = uri("https://maven.pkg.github.com/amarokice/amarokjsonforjava")
             credentials {
                 username = "AmarokIce"
-                password = ProcessEnvironment.getenv("GITHUB_TOKEN")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
@@ -49,4 +50,12 @@ publishing {
             from(components.java)
         }
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
 }

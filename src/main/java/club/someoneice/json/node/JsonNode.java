@@ -10,11 +10,11 @@ public class JsonNode<T> {
     protected final T obj;
 
     /**
-     * 导览: <br />
-     * {@link JsonNode#getType()} - 获取 JsonNode 持有的参形。 <br />
-     * {@link JsonNode#asTypeNode()} - 未知的 JsonNode 转为可知的 JsonNode 分支。 <br />
-     * {@link JsonNode#typeOf(NodeType)} - 匹配 {@link JsonNode.NodeType} 相同。 <br />
-     * {@link JsonNode#getObj()} - 获取 JsonNode 持有的原始数据。 <br />
+     * 导览: <br>
+     * {@link JsonNode#getType()} - 获取 JsonNode 持有的参形。 <br>
+     * {@link JsonNode#asTypeNode()} - 未知的 JsonNode 转为可知的 JsonNode 分支。 <br>
+     * {@link JsonNode#typeOf(NodeType)} - 匹配 {@link JsonNode.NodeType} 相同。 <br>
+     * {@link JsonNode#getObj()} - 获取 JsonNode 持有的原始数据。 <br>
      */
     public JsonNode(T obj) {
         this.obj = obj;

@@ -10,7 +10,7 @@ public class PairList<A, B> extends ArrayList<Pair<A, B>> {
     }
 
     /**
-     * @deprecated - Use {@link PairList#getByKey(A)}
+     * @deprecated - Use {@link PairList#getByKey}
      */
     @Deprecated
     public Pair<A, B> get(A key) {
