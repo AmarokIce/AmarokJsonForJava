@@ -1,60 +1,22 @@
-name: Javadoc
+name: Deploy Javadoc
 
 on:
-  workflow_dispatch:
-  release:
-    types: [ published ]
+  push:
+    branches:
+      - master
+      - main
 
 jobs:
-  apidoc-deploy:
+  publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v2
-
-      - name: Set up the Java JDK
-        uses: actions/setup-java@v2
+      - name: Deploy JavaDoc 🚀
+        uses: MathieuSoysal/Javadoc-publisher.yml@v2.5.0
         with:
-          java-version: '8'
-          distribution: 'adopt'
-
-      - name: Generate docs
-        run: .\gradlew javadoc
-
-      - name: Copy to Location
-        run: |
-          rm -rf docs
-          mkdir -vp docs
-          cp -vrf build/docs/javadoc/
-
-      - name: Configure Git
-        env:
-          DEPLOY_PRI: ${{secrets.DEPLOY_PRI}}
-          GIT_USERNAME: ${{ github.repository_owner }}
-          GIT_EMAIL: snowlyicewolf@outlook.com
-        run: |
-          sudo timedatectl set-timezone "Asia/Shanghai"
-          mkdir -p ~/.ssh/
-          echo "$DEPLOY_PRI" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          git config --global user.name '$DEPLOY_PRI'
-          git config --global user.email '$DEPLOY_PRI'
-
-
-      - name: Commit documentation
-        env:
-          GIT_URL: "git@github.com:AmarokIce/AmarokJsonForJava.git"
-        run: |
-          cd docs
-          git init
-          git remote add origin $GIT_URL
-          git checkout -b gh-pages
-          git add -A
-          git commit -m "API Document generated."
-
-      - name: Push javadocs # 推送
-        run: |
-          cd docs
-          git push origin HEAD:gh-pages --force
-
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          javadoc-branch: javadoc
+          java-version: 8
+          target-folder: javadoc
+          project: gradle
