@@ -7,9 +7,9 @@ import club.someoneice.json.api.TreeNode;
 import java.util.*;
 import java.util.stream.Stream;
 
-@SuppressWarnings({"unused", "rawtypes", "unchecked"})
-public class MapNode extends JsonNode<Map> implements Iterable<Pair<String, JsonNode<?>>>, TreeNode<Pair<String, JsonNode<?>>> {
-    public MapNode(Map<String, ? extends JsonNode<?>> obj) {
+@SuppressWarnings({"rawtypes", "unchecked"})
+public class MapNode extends JsonNode<Map<String, JsonNode<?>>> implements Iterable<Pair<String, JsonNode<?>>>, TreeNode<Pair<String, JsonNode<?>>> {
+    public MapNode(Map<String, JsonNode<?>> obj) {
         super(obj);
     }
 
@@ -40,16 +40,16 @@ public class MapNode extends JsonNode<Map> implements Iterable<Pair<String, Json
         return (JsonNode<?>) this.obj.get(key);
     }
 
-    public void put(String key, JsonNode<?> any) {
-        this.obj.put(key, any);
+    public JsonNode<?> put(String key, JsonNode<?> value) {
+        return this.obj.put(key, value);
     }
 
     public boolean has(String key) {
         return this.obj.containsKey(key);
     }
 
-    public void put(Pair<String, JsonNode<?>> pair) {
-        this.put(pair.getKey(), pair.getValue());
+    public JsonNode<?> put(Pair<String, JsonNode<?>> pair) {
+        return this.put(pair.getKey(), pair.getValue());
     }
 
     public void clear() {
@@ -58,6 +58,10 @@ public class MapNode extends JsonNode<Map> implements Iterable<Pair<String, Json
 
     public boolean isEmpty() {
         return this.obj.isEmpty();
+    }
+
+    public boolean isNotEmpty() {
+        return !this.obj.isEmpty();
     }
 
     public PairList<String, JsonNode<?>> asPairList() {

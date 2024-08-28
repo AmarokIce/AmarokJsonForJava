@@ -1,5 +1,10 @@
 package club.someoneice.json.api;
 
 public interface TreeNode<T> {
-    void addChild(T... child);
+	/**
+	 * SafeVarages: <br>
+	 * 	继承后替换为所属的泛型，此处泛型堆为安全接口。<br>
+	 * 	禁止直接序列化 TreeNode.
+	 * */
+	void addChild(@SuppressWarnings("unchecked") T... childs);
 }

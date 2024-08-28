@@ -1,13 +1,13 @@
-# Amarok 's Json For Java
+# Amarok 's Json For Java （AJ4J）
 
 [简体中文](README_CN.md)
 
-## What is this?
+## What is AJ4J?
 Amarok's Json For Java is a Json parsing library written in Java, which can accurately process Json and internally infer the type obtained by Json.
 
 Processon Json, Json5, and write to the files!
 
-## Why Amarok's Json4J not other?
+## Why AJ4J?
 **Google Gson** ： Gson is great!, but Gson sometimes handles type inference incorrectly, and it's easy to get into the trouble of type agnosticism when you use JsonObject directly. Most of the time this is fine, but I am writing something based on Json parsing that I urgently need to know if the user has entered the correct type and pre-infer the type to throw the correct false positive. Constantly trying to check only increases the performance overhead of the runtime, giving the user the feeling that "this software is stuck", so I think type inference should be done at parsing time.
 
 Doing so may make parsing slower, but it's equivalent. And Gson still doesn't seem to be able to handle Json5.
@@ -16,7 +16,7 @@ Doing so may make parsing slower, but it's equivalent. And Gson still doesn't se
 
 But Jackson's size made my post-package program look bloated. In some of the software that is required to be lighter, I will try to consider other libraries.
 
-**FoxSuma Json for Java**: I packaged it in my Minecraft Mod Lib because the library is cool (it supports Json5 processing!), but it smells a bit personal and just as easy to get into type-agnostic trouble as Gson. It should be said that if my delegator wants me not to use Kotlin so that some of his other developers can interface with me (they may never have tried Kotlin), then I need to redo Boolean every time I want to type it, rather than framing a configurator by extending functions.
+**FoxSuma Json for Java**: I packaged it in my Minecraft Mod Lib because the library is cool (it supports Json5 processing!), but it smells a bit personal and just as easy to get into type-agnostic trouble as Gson. Consistently holding a JsonNode's data type is a better option than by internal inference (or relying on the brain).
 
 ## Let's go start
 
@@ -26,6 +26,7 @@ But Jackson's size made my post-package program look bloated. In some of the sof
 
 [Jitpack.io](https://jitpack.io/#AmarokIce/AmarokJsonForJava)
 
+Gradle:
 ```groove
 repositories {
     maven {
@@ -39,22 +40,38 @@ dependencies {
 }
 ```
 
+Gradle Kotlin:
+```kotlin script
+repositories {
+    maven {
+        url = uri("http://maven.snowlyicewolf.club")
+        isAllowInsecureProtocol true
+    }
+}
+
+dependencies {
+    implementation("club.someoneice.json:amarok-json-for-java:1.6")
+}
+```
+
 ### From Json
 
 Set up our Json File, Json String, and then instance the [JSON](src/main/java/club/someoneice/json/JSON.java). Any you can use Json or Json5, but don't use Json Handler to processor Json5.
 
 ```java
-JSON json = JSON.json;      // For Json
+JSON json = JSON.json;      // For Json, Or
 JSON json5 = JSON.json5;    // For Json or Json5
 ```
 
-Then parse get JsonNode or Class:
+Then parse get JsonNode:
 ```java
 // Processor to ArrayNode or MapNode which your Json started。
 JsonNode node = json.parse(file);
 
-// Remap the class auto.
-TestClass test = json.tryPullAsClass(TestClass.class, file1);
+// Parse to Array or Map (Maybe empty)
+ArrayNode arrayNode = json.tryPullArrayOrEmpty(node);
+MapNode mapNode = json.tryPullObjectOrEmpty(node);
+
 ```
 
 > The default JsonNode type is: <br />

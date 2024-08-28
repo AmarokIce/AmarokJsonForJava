@@ -64,6 +64,11 @@ public class JsonNode<T> {
                 return new MapNode(new HashMap<>((Map) this.obj));
             case Array:
                 return new ArrayNode(new ArrayList<>((List) this.obj));
+            case Null:
+            	return NullNode.INSTANCE;
+            case Number:
+            case Other:
+            	return this;
         }
 
         return this;

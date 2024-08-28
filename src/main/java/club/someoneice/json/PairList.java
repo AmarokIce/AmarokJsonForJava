@@ -4,10 +4,20 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class PairList<A, B> extends ArrayList<Pair<A, B>> {
+	private static final long serialVersionUID = 2;
+	
+	public final Set<Pair<A, B>> cache = new HashSet<>();
 
-    public void put(A key, B value) {
-        this.add(new Pair<>(key, value));
+	public Pair<A, B> put(A key, B value) {
+		Pair<A, B> pair = new Pair<>(key, value);
+        this.add(pair);
+        return pair;
     }
+	
+	public Pair<A, B> put(Pair<A, B> pair) {
+		this.add(pair);
+		return pair;
+	}
 
     /**
      * @deprecated - Use {@link PairList#getByKey}
@@ -18,17 +28,17 @@ public class PairList<A, B> extends ArrayList<Pair<A, B>> {
     }
 
     public Pair<A, B> getByKey(A key) {
-        return this.stream().filter(it -> it.getKey().equals(key)).findFirst().orElse(null);
+    	this.checkUpdates();
+    	return this.cache.stream().filter(it -> it.getKey() == key).findFirst().orElse(null);
     }
 
     public Pair<A, B> getByValue(B value) {
-        return this.stream().filter(it -> it.getValue().equals(value)).findFirst().orElse(null);
+        this.checkUpdates();
+        return this.stream().filter(it -> it.getValue() == value).findFirst().orElse(null);
     }
 
     public Pair<A, B> at(int i) {
-        if (i < this.size())
-            return this.get(i);
-        else return null;
+    	return i < this.size() ? this.get(i) : null;
     }
 
     public void replaceIf(Pair<A, B> pair, Predicate<? super Pair<A, B>> filter) {
@@ -75,5 +85,14 @@ public class PairList<A, B> extends ArrayList<Pair<A, B>> {
 
     public Iterator<Pair<A, B>> getIterator() {
         return this.iterator();
+    }
+    
+    private void checkUpdates() {
+    	if (this.cache.size() == this.size()) {
+    		return;
+    	}
+    	
+    	this.cache.clear();
+    	this.cache.addAll(this);
     }
 }

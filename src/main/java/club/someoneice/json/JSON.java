@@ -69,6 +69,8 @@ public final class JSON {
     }
 
     /* Damage Zoom : Don't use these on Java 12+ */
+    
+    // TODO : Fix the instances.
 
     public <T> T tryPullAsClass(Class<? extends T> clazz, String str) throws InstantiationException, IllegalAccessException {
         MapNode jsonMap = tryPullObjectOrEmpty(this.parse(str));

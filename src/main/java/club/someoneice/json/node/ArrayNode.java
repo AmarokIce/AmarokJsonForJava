@@ -5,9 +5,9 @@ import club.someoneice.json.api.TreeNode;
 import java.util.*;
 import java.util.stream.Stream;
 
-@SuppressWarnings({"unused", "rawtypes", "unchecked"})
-public class ArrayNode extends JsonNode<List> implements Iterable<JsonNode<?>>, TreeNode<JsonNode<?>> {
-    public ArrayNode(List<? extends JsonNode<?>> obj) {
+@SuppressWarnings({"rawtypes", "unchecked"})
+public class ArrayNode extends JsonNode<List<JsonNode<?>>> implements Iterable<JsonNode<?>>, TreeNode<JsonNode<?>> {
+    public ArrayNode(List<JsonNode<?>> obj) {
         super(obj);
     }
 
@@ -30,8 +30,9 @@ public class ArrayNode extends JsonNode<List> implements Iterable<JsonNode<?>>, 
         Arrays.stream(child).forEach(this::add);
     }
 
-    public void add(JsonNode<?> any) {
-        this.obj.add(any);
+    public JsonNode<?> add(JsonNode<?> obj) {
+        this.obj.add(obj);
+        return obj;
     }
 
     public void addAll(List<JsonNode<?>> list) {
@@ -48,6 +49,10 @@ public class ArrayNode extends JsonNode<List> implements Iterable<JsonNode<?>>, 
 
     public boolean isEmpty() {
         return this.obj.isEmpty();
+    }
+
+    public boolean isNotEmpty() {
+        return !this.obj.isEmpty();
     }
 
     public Stream<JsonNode<?>> stream() {
