@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":42,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":42,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -73,13 +73,13 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#fields.inherited.from.class.java.util.AbstractList">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -144,6 +144,17 @@ extends java.util.ArrayList&lt;<a href="../../../club/someoneice/json/Pair.html"
 <!--   -->
 </a>
 <h3>Field Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>java.util.Set&lt;<a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../club/someoneice/json/PairList.html#cache">cache</a></span></code>&nbsp;</td>
+</tr>
+</table>
 <ul class="blockList">
 <li class="blockList"><a name="fields.inherited.from.class.java.util.AbstractList">
 <!--   -->
@@ -219,31 +230,35 @@ extends java.util.ArrayList&lt;<a href="../../../club/someoneice/json/Pair.html"
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../club/someoneice/json/PairList.html#getIterator--">getIterator</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i8" class="altColor">
-<td class="colFirst"><code>void</code></td>
+<td class="colFirst"><code><a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../club/someoneice/json/PairList.html#put-A-B-">put</a></span>(<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>&nbsp;key,
    <a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&nbsp;value)</code>&nbsp;</td>
 </tr>
 <tr id="i9" class="rowColor">
+<td class="colFirst"><code><a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../club/someoneice/json/PairList.html#put-club.someoneice.json.Pair-">put</a></span>(<a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;&nbsp;pair)</code>&nbsp;</td>
+</tr>
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../club/someoneice/json/PairList.html#replace-java.util.List-">replace</a></span>(java.util.List&lt;<a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;&gt;&nbsp;list)</code>&nbsp;</td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../club/someoneice/json/PairList.html#replaceIf-A-B-java.util.function.Predicate-">replaceIf</a></span>(<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>&nbsp;key,
          <a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&nbsp;value,
          java.util.function.Predicate&lt;? super <a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;&gt;&nbsp;filter)</code>&nbsp;</td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../club/someoneice/json/PairList.html#replaceIf-club.someoneice.json.Pair-java.util.function.Predicate-">replaceIf</a></span>(<a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;&nbsp;pair,
          java.util.function.Predicate&lt;? super <a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;&gt;&nbsp;filter)</code>&nbsp;</td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../club/someoneice/json/PairList.html#setKeyIf-A-java.util.function.Predicate-">setKeyIf</a></span>(<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>&nbsp;key,
         java.util.function.Predicate&lt;? super <a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;&gt;&nbsp;filter)</code>&nbsp;</td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../club/someoneice/json/PairList.html#setValueIf-B-java.util.function.Predicate-">setValueIf</a></span>(<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&nbsp;value,
           java.util.function.Predicate&lt;? super <a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;&gt;&nbsp;filter)</code>&nbsp;</td>
@@ -299,6 +314,23 @@ extends java.util.ArrayList&lt;<a href="../../../club/someoneice/json/Pair.html"
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="cache">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>cache</h4>
+<pre>public final&nbsp;java.util.Set&lt;<a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;&gt; cache</pre>
+</li>
+</ul>
+</li>
+</ul>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.detail">
@@ -330,8 +362,17 @@ extends java.util.ArrayList&lt;<a href="../../../club/someoneice/json/Pair.html"
 <ul class="blockList">
 <li class="blockList">
 <h4>put</h4>
-<pre>public&nbsp;void&nbsp;put(<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>&nbsp;key,
-                <a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&nbsp;value)</pre>
+<pre>public&nbsp;<a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;&nbsp;put(<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>&nbsp;key,
+                     <a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&nbsp;value)</pre>
+</li>
+</ul>
+<a name="put-club.someoneice.json.Pair-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>put</h4>
+<pre>public&nbsp;<a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;&nbsp;put(<a href="../../../club/someoneice/json/Pair.html" title="class in club.someoneice.json">Pair</a>&lt;<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">A</a>,<a href="../../../club/someoneice/json/PairList.html" title="type parameter in PairList">B</a>&gt;&nbsp;pair)</pre>
 </li>
 </ul>
 <a name="get-java.lang.Object-">
@@ -525,13 +566,13 @@ public&nbsp;<a href="../../../club/someoneice/json/Pair.html" title="class in cl
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#fields.inherited.from.class.java.util.AbstractList">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>

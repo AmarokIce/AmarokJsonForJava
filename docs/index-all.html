@@ -89,7 +89,11 @@
 <dt><span class="memberNameLink"><a href="club/someoneice/json/processor/Json5Builder.ObjectBean.html#addBean-java.lang.String-club.someoneice.json.processor.Json5Builder.ObjectBean-">addBean(String, Json5Builder.ObjectBean)</a></span> - Method in class club.someoneice.json.processor.<a href="club/someoneice/json/processor/Json5Builder.ObjectBean.html" title="class in club.someoneice.json.processor">Json5Builder.ObjectBean</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="club/someoneice/json/api/TreeNode.html#addChild-T...-">addChild(T...)</a></span> - Method in interface club.someoneice.json.api.<a href="club/someoneice/json/api/TreeNode.html" title="interface in club.someoneice.json.api">TreeNode</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">SafeVarages: <br>
+        继承后替换为所属的泛型，此处泛型堆为安全接口。<br>
+        禁止直接序列化 TreeNode.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="club/someoneice/json/node/ArrayNode.html#addChild-club.someoneice.json.node.JsonNode...-">addChild(JsonNode&lt;?&gt;...)</a></span> - Method in class club.someoneice.json.node.<a href="club/someoneice/json/node/ArrayNode.html" title="class in club.someoneice.json.node">ArrayNode</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="club/someoneice/json/node/MapNode.html#addChild-club.someoneice.json.Pair...-">addChild(Pair&lt;String, JsonNode&lt;?&gt;&gt;...)</a></span> - Method in class club.someoneice.json.node.<a href="club/someoneice/json/node/MapNode.html" title="class in club.someoneice.json.node">MapNode</a></dt>
@@ -102,7 +106,7 @@
 <dd>&nbsp;</dd>
 <dt><a href="club/someoneice/json/node/ArrayNode.html" title="class in club.someoneice.json.node"><span class="typeNameLink">ArrayNode</span></a> - Class in <a href="club/someoneice/json/node/package-summary.html">club.someoneice.json.node</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="club/someoneice/json/node/ArrayNode.html#ArrayNode-java.util.List-">ArrayNode(List&lt;? extends JsonNode&lt;?&gt;&gt;)</a></span> - Constructor for class club.someoneice.json.node.<a href="club/someoneice/json/node/ArrayNode.html" title="class in club.someoneice.json.node">ArrayNode</a></dt>
+<dt><span class="memberNameLink"><a href="club/someoneice/json/node/ArrayNode.html#ArrayNode-java.util.List-">ArrayNode(List&lt;JsonNode&lt;?&gt;&gt;)</a></span> - Constructor for class club.someoneice.json.node.<a href="club/someoneice/json/node/ArrayNode.html" title="class in club.someoneice.json.node">ArrayNode</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="club/someoneice/json/node/ArrayNode.html#ArrayNode--">ArrayNode()</a></span> - Constructor for class club.someoneice.json.node.<a href="club/someoneice/json/node/ArrayNode.html" title="class in club.someoneice.json.node">ArrayNode</a></dt>
 <dd>&nbsp;</dd>
@@ -184,6 +188,8 @@
 </a>
 <h2 class="title">C</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="club/someoneice/json/PairList.html#cache">cache</a></span> - Variable in class club.someoneice.json.<a href="club/someoneice/json/PairList.html" title="class in club.someoneice.json">PairList</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="club/someoneice/json/api/IJson5Bean.html#clean--">clean()</a></span> - Method in interface club.someoneice.json.api.<a href="club/someoneice/json/api/IJson5Bean.html" title="interface in club.someoneice.json.api">IJson5Bean</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="club/someoneice/json/processor/Json5Builder.ArrayBean.html#clean--">clean()</a></span> - Method in class club.someoneice.json.processor.<a href="club/someoneice/json/processor/Json5Builder.ArrayBean.html" title="class in club.someoneice.json.processor">Json5Builder.ArrayBean</a></dt>
@@ -201,7 +207,9 @@
 <dt><a href="club/someoneice/json/api/package-summary.html">club.someoneice.json.api</a> - package club.someoneice.json.api</dt>
 <dd>&nbsp;</dd>
 <dt><a href="club/someoneice/json/node/package-summary.html">club.someoneice.json.node</a> - package club.someoneice.json.node</dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">JsonNode 是 Json 解析后数据的持有器。node 包包括了全部 JsonNode 持有的目标内容。</div>
+</dd>
 <dt><a href="club/someoneice/json/processor/package-summary.html">club.someoneice.json.processor</a> - package club.someoneice.json.processor</dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="club/someoneice/json/node/ArrayNode.html#copy--">copy()</a></span> - Method in class club.someoneice.json.node.<a href="club/someoneice/json/node/ArrayNode.html" title="class in club.someoneice.json.node">ArrayNode</a></dt>
@@ -372,6 +380,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="club/someoneice/json/processor/Json5Builder.ObjectBean.html#isMap--">isMap()</a></span> - Method in class club.someoneice.json.processor.<a href="club/someoneice/json/processor/Json5Builder.ObjectBean.html" title="class in club.someoneice.json.processor">Json5Builder.ObjectBean</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="club/someoneice/json/node/ArrayNode.html#isNotEmpty--">isNotEmpty()</a></span> - Method in class club.someoneice.json.node.<a href="club/someoneice/json/node/ArrayNode.html" title="class in club.someoneice.json.node">ArrayNode</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="club/someoneice/json/node/MapNode.html#isNotEmpty--">isNotEmpty()</a></span> - Method in class club.someoneice.json.node.<a href="club/someoneice/json/node/MapNode.html" title="class in club.someoneice.json.node">MapNode</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="club/someoneice/json/node/ArrayNode.html#iterator--">iterator()</a></span> - Method in class club.someoneice.json.node.<a href="club/someoneice/json/node/ArrayNode.html" title="class in club.someoneice.json.node">ArrayNode</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="club/someoneice/json/node/MapNode.html#iterator--">iterator()</a></span> - Method in class club.someoneice.json.node.<a href="club/someoneice/json/node/MapNode.html" title="class in club.someoneice.json.node">MapNode</a></dt>
@@ -438,7 +450,7 @@
 <dl>
 <dt><a href="club/someoneice/json/node/MapNode.html" title="class in club.someoneice.json.node"><span class="typeNameLink">MapNode</span></a> - Class in <a href="club/someoneice/json/node/package-summary.html">club.someoneice.json.node</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="club/someoneice/json/node/MapNode.html#MapNode-java.util.Map-">MapNode(Map&lt;String, ? extends JsonNode&lt;?&gt;&gt;)</a></span> - Constructor for class club.someoneice.json.node.<a href="club/someoneice/json/node/MapNode.html" title="class in club.someoneice.json.node">MapNode</a></dt>
+<dt><span class="memberNameLink"><a href="club/someoneice/json/node/MapNode.html#MapNode-java.util.Map-">MapNode(Map&lt;String, JsonNode&lt;?&gt;&gt;)</a></span> - Constructor for class club.someoneice.json.node.<a href="club/someoneice/json/node/MapNode.html" title="class in club.someoneice.json.node">MapNode</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="club/someoneice/json/node/MapNode.html#MapNode--">MapNode()</a></span> - Constructor for class club.someoneice.json.node.<a href="club/someoneice/json/node/MapNode.html" title="class in club.someoneice.json.node">MapNode</a></dt>
 <dd>&nbsp;</dd>
@@ -499,6 +511,8 @@
 <dt><span class="memberNameLink"><a href="club/someoneice/json/node/MapNode.html#put-club.someoneice.json.Pair-">put(Pair&lt;String, JsonNode&lt;?&gt;&gt;)</a></span> - Method in class club.someoneice.json.node.<a href="club/someoneice/json/node/MapNode.html" title="class in club.someoneice.json.node">MapNode</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="club/someoneice/json/PairList.html#put-A-B-">put(A, B)</a></span> - Method in class club.someoneice.json.<a href="club/someoneice/json/PairList.html" title="class in club.someoneice.json">PairList</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="club/someoneice/json/PairList.html#put-club.someoneice.json.Pair-">put(Pair&lt;A, B&gt;)</a></span> - Method in class club.someoneice.json.<a href="club/someoneice/json/PairList.html" title="class in club.someoneice.json">PairList</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="club/someoneice/json/processor/Json5Builder.ObjectBean.html#put-java.lang.String-club.someoneice.json.node.JsonNode-">put(String, JsonNode&lt;?&gt;)</a></span> - Method in class club.someoneice.json.processor.<a href="club/someoneice/json/processor/Json5Builder.ObjectBean.html" title="class in club.someoneice.json.processor">Json5Builder.ObjectBean</a></dt>
 <dd>&nbsp;</dd>

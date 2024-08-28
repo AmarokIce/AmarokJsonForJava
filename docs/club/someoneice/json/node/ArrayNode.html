@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -98,7 +98,7 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li><a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">club.someoneice.json.node.JsonNode</a>&lt;java.util.List&gt;</li>
+<li><a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">club.someoneice.json.node.JsonNode</a>&lt;java.util.List&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;&gt;</li>
 <li>
 <ul class="inheritance">
 <li>club.someoneice.json.node.ArrayNode</li>
@@ -117,7 +117,7 @@ var activeTableTab = "activeTableTab";
 <hr>
 <br>
 <pre>public class <span class="typeNameLabel">ArrayNode</span>
-extends <a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;java.util.List&gt;
+extends <a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;java.util.List&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;&gt;
 implements java.lang.Iterable&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;, <a href="../../../../club/someoneice/json/api/TreeNode.html" title="interface in club.someoneice.json.api">TreeNode</a>&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;</pre>
 </li>
 </ul>
@@ -170,7 +170,7 @@ implements java.lang.Iterable&lt;<a href="../../../../club/someoneice/json/node/
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../club/someoneice/json/node/ArrayNode.html#ArrayNode--">ArrayNode</a></span>()</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../club/someoneice/json/node/ArrayNode.html#ArrayNode-java.util.List-">ArrayNode</a></span>(java.util.List&lt;? extends <a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;&nbsp;obj)</code>&nbsp;</td>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../club/someoneice/json/node/ArrayNode.html#ArrayNode-java.util.List-">ArrayNode</a></span>(java.util.List&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;&nbsp;obj)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -188,8 +188,8 @@ implements java.lang.Iterable&lt;<a href="../../../../club/someoneice/json/node/
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../club/someoneice/json/node/ArrayNode.html#add-club.someoneice.json.node.JsonNode-">add</a></span>(<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&nbsp;any)</code>&nbsp;</td>
+<td class="colFirst"><code><a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../club/someoneice/json/node/ArrayNode.html#add-club.someoneice.json.node.JsonNode-">add</a></span>(<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&nbsp;obj)</code>&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
@@ -197,7 +197,11 @@ implements java.lang.Iterable&lt;<a href="../../../../club/someoneice/json/node/
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../club/someoneice/json/node/ArrayNode.html#addChild-club.someoneice.json.node.JsonNode...-">addChild</a></span>(<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;...&nbsp;child)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../club/someoneice/json/node/ArrayNode.html#addChild-club.someoneice.json.node.JsonNode...-">addChild</a></span>(<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;...&nbsp;child)</code>
+<div class="block">SafeVarages: <br>
+        继承后替换为所属的泛型，此处泛型堆为安全接口。<br>
+        禁止直接序列化 TreeNode.</div>
+</td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../club/someoneice/json/node/ArrayNode.html" title="class in club.someoneice.json.node">ArrayNode</a></code></td>
@@ -234,10 +238,14 @@ implements java.lang.Iterable&lt;<a href="../../../../club/someoneice/json/node/
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../club/someoneice/json/node/ArrayNode.html#isEmpty--">isEmpty</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i11" class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../club/someoneice/json/node/ArrayNode.html#isNotEmpty--">isNotEmpty</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>java.util.Iterator&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../club/someoneice/json/node/ArrayNode.html#iterator--">iterator</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.util.stream.Stream&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../club/someoneice/json/node/ArrayNode.html#stream--">stream</a></span>()</code>&nbsp;</td>
 </tr>
@@ -283,7 +291,7 @@ implements java.lang.Iterable&lt;<a href="../../../../club/someoneice/json/node/
 <ul class="blockList">
 <li class="blockList">
 <h4>ArrayNode</h4>
-<pre>public&nbsp;ArrayNode(java.util.List&lt;? extends <a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;&nbsp;obj)</pre>
+<pre>public&nbsp;ArrayNode(java.util.List&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;&nbsp;obj)</pre>
 </li>
 </ul>
 <a name="ArrayNode--">
@@ -312,7 +320,7 @@ implements java.lang.Iterable&lt;<a href="../../../../club/someoneice/json/node/
 <pre>public&nbsp;java.util.List&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;&nbsp;getObj()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../club/someoneice/json/node/JsonNode.html#getObj--">getObj</a></code>&nbsp;in class&nbsp;<code><a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;java.util.List&gt;</code></dd>
+<dd><code><a href="../../../../club/someoneice/json/node/JsonNode.html#getObj--">getObj</a></code>&nbsp;in class&nbsp;<code><a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;java.util.List&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -327,7 +335,7 @@ implements java.lang.Iterable&lt;<a href="../../../../club/someoneice/json/node/
 <div class="block">获取 JsonNode 持有的参形。通常这个方法会被对应属性的 JsonNode 覆写，因此 JsonNode 默认的匹配机制只会在类型持有时被执行一次。</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../club/someoneice/json/node/JsonNode.html#getType--">getType</a></code>&nbsp;in class&nbsp;<code><a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;java.util.List&gt;</code></dd>
+<dd><code><a href="../../../../club/someoneice/json/node/JsonNode.html#getType--">getType</a></code>&nbsp;in class&nbsp;<code><a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;java.util.List&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;&gt;</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>JsonNode 持有的数据类型。</dd>
 </dl>
@@ -340,6 +348,10 @@ implements java.lang.Iterable&lt;<a href="../../../../club/someoneice/json/node/
 <li class="blockList">
 <h4>addChild</h4>
 <pre>public&nbsp;void&nbsp;addChild(<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;...&nbsp;child)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="../../../../club/someoneice/json/api/TreeNode.html#addChild-T...-">TreeNode</a></code></span></div>
+<div class="block">SafeVarages: <br>
+        继承后替换为所属的泛型，此处泛型堆为安全接口。<br>
+        禁止直接序列化 TreeNode.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../club/someoneice/json/api/TreeNode.html#addChild-T...-">addChild</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../club/someoneice/json/api/TreeNode.html" title="interface in club.someoneice.json.api">TreeNode</a>&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;</code></dd>
@@ -352,7 +364,7 @@ implements java.lang.Iterable&lt;<a href="../../../../club/someoneice/json/node/
 <ul class="blockList">
 <li class="blockList">
 <h4>add</h4>
-<pre>public&nbsp;void&nbsp;add(<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&nbsp;any)</pre>
+<pre>public&nbsp;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&nbsp;add(<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&nbsp;obj)</pre>
 </li>
 </ul>
 <a name="addAll-java.util.List-">
@@ -391,6 +403,15 @@ implements java.lang.Iterable&lt;<a href="../../../../club/someoneice/json/node/
 <pre>public&nbsp;boolean&nbsp;isEmpty()</pre>
 </li>
 </ul>
+<a name="isNotEmpty--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isNotEmpty</h4>
+<pre>public&nbsp;boolean&nbsp;isNotEmpty()</pre>
+</li>
+</ul>
 <a name="stream--">
 <!--   -->
 </a>
@@ -422,7 +443,7 @@ implements java.lang.Iterable&lt;<a href="../../../../club/someoneice/json/node/
 <pre>public&nbsp;<a href="../../../../club/someoneice/json/node/ArrayNode.html" title="class in club.someoneice.json.node">ArrayNode</a>&nbsp;asTypeNode()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../club/someoneice/json/node/JsonNode.html#asTypeNode--">asTypeNode</a></code>&nbsp;in class&nbsp;<code><a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;java.util.List&gt;</code></dd>
+<dd><code><a href="../../../../club/someoneice/json/node/JsonNode.html#asTypeNode--">asTypeNode</a></code>&nbsp;in class&nbsp;<code><a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;java.util.List&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;&gt;</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>将未知的类型重写为可知类型。</dd>
 </dl>
@@ -437,7 +458,7 @@ implements java.lang.Iterable&lt;<a href="../../../../club/someoneice/json/node/
 <pre>public&nbsp;<a href="../../../../club/someoneice/json/node/ArrayNode.html" title="class in club.someoneice.json.node">ArrayNode</a>&nbsp;copy()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../club/someoneice/json/node/JsonNode.html#copy--">copy</a></code>&nbsp;in class&nbsp;<code><a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;java.util.List&gt;</code></dd>
+<dd><code><a href="../../../../club/someoneice/json/node/JsonNode.html#copy--">copy</a></code>&nbsp;in class&nbsp;<code><a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;java.util.List&lt;<a href="../../../../club/someoneice/json/node/JsonNode.html" title="class in club.someoneice.json.node">JsonNode</a>&lt;?&gt;&gt;&gt;</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>拷贝数据类型为一个全新对象。返回值不会与原有值存在除内容相同外的交集。</dd>
 </dl>
