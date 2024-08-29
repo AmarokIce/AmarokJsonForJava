@@ -1,3 +1,13 @@
+<center>
+
+![](./img/AmarokJsonForJava.png)
+
+![](https://badgen.net/badge/Java/8/blue?icon=java)
+[![](https://badgen.net/badge/License/MPL-2.0/yellow)](./LICENSE.txt)
+[![](https://jitpack.io/v/AmarokIce/AmarokJsonForJava.svg)](https://jitpack.io/#AmarokIce/AmarokJsonForJava)
+
+</center>
+
 # Amarok 's Json For Java
 
 ## 这是什么
@@ -21,8 +31,6 @@ Amarok's Json For Java 是一个基于 Java 编写的 Json 解析库，能够较
 ### Gradle
 
 [Github Package](https://github.com/AmarokIce/AmarokJsonForJava/packages/1929112)
-
-[Jitpack.io](https://jitpack.io/#AmarokIce/AmarokJsonForJava)
 
 ```groove
 repositories {

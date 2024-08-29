@@ -1,3 +1,13 @@
+<center>
+
+![](./img/AmarokJsonForJava.png)
+
+![](https://badgen.net/badge/Java/8/blue?icon=java)
+[![](https://badgen.net/badge/License/MPL-2.0/yellow)](./LICENSE.txt)
+[![](https://jitpack.io/v/AmarokIce/AmarokJsonForJava.svg)](https://jitpack.io/#AmarokIce/AmarokJsonForJava)
+
+</center>
+
 # Amarok 's Json For Java （AJ4J）
 
 [简体中文](README_CN.md)
