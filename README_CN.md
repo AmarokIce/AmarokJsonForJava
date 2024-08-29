@@ -1,4 +1,4 @@
-<center>
+<div align=center>
 
 ![](./img/AmarokJsonForJava.png)
 
@@ -6,7 +6,7 @@
 [![](https://badgen.net/badge/License/MPL-2.0/yellow)](./LICENSE.txt)
 [![](https://jitpack.io/v/AmarokIce/AmarokJsonForJava.svg)](https://jitpack.io/#AmarokIce/AmarokJsonForJava)
 
-</center>
+</div>
 
 # Amarok 's Json For Java
 
