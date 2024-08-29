@@ -183,6 +183,9 @@ public class Json5Builder {
         return builder.toString();
     }
 
+    /**
+     * Json5Builder 中的 Array 封装器。用于封装 ArrayNode 相关数据。继承自 NullNode，可以被当做 JsonNode 分类，但不可被 JsonParser 解析、
+     */
     public static final class ArrayBean extends NullNode implements IJson5Bean {
         private final PairList<COMMAND, JsonNode<?>> commandSet = new PairList<>();
 
@@ -232,6 +235,9 @@ public class Json5Builder {
         }
     }
 
+    /**
+     * Json5Builder 中的 Map 封装器。用于封装 MapNode 相关数据。继承自 NullNode，可以被当做 JsonNode 分类，但不可被 JsonParser 解析、
+     */
     public static final class ObjectBean extends NullNode implements IJson5Bean {
         private final PairList<COMMAND, Pair<String, JsonNode<?>>> commandSet = new PairList<>();
 
