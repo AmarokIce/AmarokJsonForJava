@@ -1,21 +1,17 @@
 package club.someoneice.json.node;
 
+import club.someoneice.json.api.exception.NodeCastException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 @SuppressWarnings({"unused", "rawtypes", "unchecked"})
 public class JsonNode<T> {
     protected final T obj;
 
-    /**
-     * 导览: <br>
-     * {@link JsonNode#getType()} - 获取 JsonNode 持有的参形。 <br>
-     * {@link JsonNode#asTypeNode()} - 未知的 JsonNode 转为可知的 JsonNode 分支。 <br>
-     * {@link JsonNode#typeOf(NodeType)} - 匹配 {@link JsonNode.NodeType} 相同。 <br>
-     * {@link JsonNode#getObj()} - 获取 JsonNode 持有的原始数据。 <br>
-     */
     public JsonNode(T obj) {
         this.obj = obj;
     }
@@ -25,7 +21,7 @@ public class JsonNode<T> {
     }
 
     /**
-     * 获取 JsonNode 持有的参形。通常这个方法会被对应属性的 JsonNode 覆写，因此 JsonNode 默认的匹配机制只会在类型持有时被执行一次。
+     * 获取 JsonNode 持有的参形。通常这个方法会被对应属性的 <code>JsonNode</code> 覆写，因此 <code>JsonNode</code> 默认的匹配机制只会在类型持有时被执行一次。
      * @return JsonNode 持有的数据类型。
      */
     public NodeType getType() {
@@ -75,6 +71,70 @@ public class JsonNode<T> {
     }
 
     /**
+     * 将未知的类型重写为目标类型。当类型不符时会抛出 {@link NodeCastException} 错误以警告。
+     * @param type 将要检查的目标类型。
+     * @param message 无法匹配时的错误类型。
+     * @return 持有目标类型的 <code>JsonNode</code>。
+     * @throws NodeCastException 当持有类型与目标类型不符合时，抛出错误。
+     */
+    public JsonNode asTypeNodeOrThrow(NodeType type, String message) {
+        JsonNode node = this.asTypeNode();
+        if (!node.typeOf(type)) {
+            throw new NodeCastException(message);
+        }
+        return node;
+    }
+
+    /**
+     * 将未知的类型重写为目标类型。当类型不符时会抛出 <code>NodeCastException</code> 错误以警告。
+     * @param type 将要检查的目标类型。
+     * @return 持有目标类型的 <code>JsonNode</code>。
+     * @throws NodeCastException 当持有类型与目标类型不符合时，抛出错误。
+     */
+    public JsonNode asTypeNodeOrThrow(NodeType type) {
+        return this.asTypeNodeOrThrow(type, "");
+    }
+
+    /**
+     * 将未知的类型重写为目标类型。当类型不符时会尝试执行 <code>Supplier</code> 取得补偿。
+     * @param type 将要检查的目标类型。
+     * @param function 在目标不符时，将会调用的补偿器。
+     * @return 转型后或补偿后的数据。
+     */
+    public <N extends JsonNode> N asTypeOrElse(NodeType type, Supplier<N> function) {
+        JsonNode node = this.asTypeNode();
+        return this.typeOf(type) ? (N) node : function.get();
+    }
+
+    /**
+     * 将未知的类型重写为目标类型。当类型不符时会提供 <code>NullNode</code>。
+     * @param type 将要检查的目标类型。
+     * @return 转型后的 <code>JsonNode</code>，亦或是 <code>NullNode</code>。
+     */
+    public JsonNode asTypeOrNull(NodeType type) {
+        JsonNode node = this.asTypeNode();
+        return this.typeOf(type) ? node : NullNode.INSTANCE;
+    }
+
+    /**
+     * 将 <code>JsonNode</code> 转为 <code>MapNode</code>，或提供空的 <code>MapNode</code>。
+     * @return 转型后的，亦或是空的 <code>MapNode</code>。
+     */
+    public MapNode asMapNodeOrEmpty() {
+        JsonNode node = this.asTypeNode();
+        return node.typeOf(NodeType.Map) ? (MapNode) node : new MapNode();
+    }
+
+    /**
+     * 将 <code>JsonNode</code> 转为 <code>ArrayNode</code>，或提供空的 <code>ArrayNode</code>。
+     * @return 转型后的，亦或是空的 <code>ArrayNode</code>。
+     */
+    public ArrayNode asArrayNodeOrEmpty() {
+        JsonNode node = this.asTypeNode();
+        return node.typeOf(NodeType.Array) ? (ArrayNode) node : new ArrayNode();
+    }
+
+    /**
      * @return 拷贝数据类型为一个全新对象。返回值不会与原有值存在除内容相同外的交集。
      */
     public JsonNode<?> copy() {
@@ -82,14 +142,21 @@ public class JsonNode<T> {
     }
 
     /**
-     * @param type 期望匹配的 NodeType。
-     * @return 相同的 NodeType 将会返回 True。
+     * @param type 期望匹配的 <code>NodeType</code>。
+     * @return 相同的 <code>NodeType</code> 将会返回 <code>True</code>。
      * @see NodeType
      */
     public boolean typeOf(NodeType type) {
         return this.getType() == type;
     }
 
+    public boolean isNull() {
+        return this.typeOf(NodeType.Null) || this == NullNode.INSTANCE;
+    }
+
+    /**
+     * @return JsonNode 持有的真实数据。
+     */
     public T getObj() {
         return this.obj;
     }

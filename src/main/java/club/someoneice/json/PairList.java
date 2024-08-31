@@ -3,6 +3,12 @@ package club.someoneice.json;
 import java.util.*;
 import java.util.function.Predicate;
 
+/**
+ * 持有 <code>Pair</code> 的 <code>ArrayList</code>。 <br>
+ * 读写速度无法与 {@link LinkedHashMap} 相提并论，仅作为 <code>Pair</code> 的列表实现。
+ * @param <A>
+ * @param <B>
+ */
 public class PairList<A, B> extends ArrayList<Pair<A, B>> {
 	private static final long serialVersionUID = 2;
 	

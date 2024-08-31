@@ -19,50 +19,80 @@ public final class JSON {
 
     private final boolean isJson5;
 
-    /**
-     * 导览: <br>
-     * {@link JSON#parse(File)} 从文件读取并解析为 JsonNode。 <br>
-     * {@link JSON#parse(InputStream, boolean)} 从输入流读取并解析为 JsonNode。内建关闭流，因此请内联创建。 <br>
-     * {@link JSON#parse(String)}  从字符串解析为 JsonNode。 <br>
-     * {@link JSON#tryPullArrayOrEmpty(String)} 从字符串解析为 ArrayNode，或返回空的 ArrayNode。 <br>
-     * {@link JSON#tryPullArrayOrEmpty(JsonNode)} 从未知类型解析为 ArrayNode，或返回空的 ArrayNode。 <br>
-     * {@link JSON#tryPullObjectOrEmpty(String)}}} 从字符串解析为 MapNode，或返回空的 MapNode。 <br>
-     * {@link JSON#tryPullObjectOrEmpty(JsonNode)} 从未知类型解析为 MapNode，或返回空的 MapNode。 <br>
-     */
     private JSON(boolean isJson5) {
         this.isJson5 = isJson5;
     }
 
+    /**
+     * 从文件读取并解析为 JsonNode。
+     * @param file 将要解析的文件。
+     * @return 处理后的未知类型的 JsonNode。
+     */
     public JsonNode<?> parse(File file) {
         JsonParser processor = new JsonParser(file, this.isJson5);
         return processor.getNodeWithTypeUnknown();
     }
 
+    /**
+     * 从输入流读取并解析为 JsonNode。内建关闭流。如 <code>shouldClose</code> 为 <code>true</code> ,请内联创建。
+     * @param inputStream 将要解析的输入流。
+     * @param shouldClose 决定流是否需要内部自动关闭。
+     * @return 处理后的未知类型的 JsonNode。
+     */
     public JsonNode<?> parse(InputStream inputStream, boolean shouldClose) {
         JsonParser processor = new JsonParser(inputStream, shouldClose, this.isJson5);
         return processor.getNodeWithTypeUnknown();
     }
 
+    /**
+     * 从字符串解析为 JsonNode。
+     * @param str 将要解析的字符串。
+     * @return 处理后的未知类型的 JsonNode。
+     */
     public JsonNode<?> parse(String str) {
         JsonParser processor = new JsonParser(str);
         return processor.getNodeWithTypeUnknown();
     }
 
+    /**
+     * @deprecated Use {@link JsonNode#asArrayNodeOrEmpty()}
+     * @param jsonNode 需要转型为 ArrayNode 的 JsonNode。
+     * @return 符合时提供确定的 ArrayNode，否则提供空的 ArrayNode。
+     */
+    @Deprecated
     public ArrayNode tryPullArrayOrEmpty(JsonNode<?> jsonNode) {
         if (jsonNode.getType() == JsonNode.NodeType.Array) return (ArrayNode) jsonNode;
         else return new ArrayNode(new ArrayList<>());
     }
 
+    /**
+     * @deprecated Use {@link JsonNode#asArrayNodeOrEmpty()}
+     * @param raw 需要转型为 ArrayNode 的字符串，自动解析后转义。
+     * @return 符合时提供确定的 ArrayNode，否则提供空的 ArrayNode。
+     */
+    @Deprecated
     public ArrayNode tryPullArrayOrEmpty(String raw) {
         JsonNode<?> jsonNode = this.parse(raw);
         return this.tryPullArrayOrEmpty(jsonNode);
     }
 
+    /**
+     * @deprecated Use {@link JsonNode#asMapNodeOrEmpty()}
+     * @param jsonNode 需要转型为 MapNode 的 JsonNode。
+     * @return 符合时提供确定的 MapNode，否则提供空的 MapNode。
+     */
+    @Deprecated
     public MapNode tryPullObjectOrEmpty(JsonNode<?> jsonNode) {
         if (jsonNode.getType() == JsonNode.NodeType.Map) return (MapNode) jsonNode;
         else return new MapNode(new HashMap<>());
     }
 
+    /**
+     * @deprecated Use {@link JsonNode#asMapNodeOrEmpty()}
+     * @param raw 需要转型为 MapNode 的字符串，自动解析后转义。
+     * @return 符合时提供确定的 MapNode，否则提供空的 MapNode。
+     */
+    @Deprecated
     public MapNode tryPullObjectOrEmpty(String raw) {
         JsonNode<?> jsonNode = this.parse(raw);
         return this.tryPullObjectOrEmpty(jsonNode);

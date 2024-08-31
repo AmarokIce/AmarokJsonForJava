@@ -11,8 +11,17 @@ plugins {
 }
 
 group 'club.someoneice.json'
-version '1.6'
+version '1.7'
 
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation("com.google.guava:guava:33.0.0-jre")
+    testImplementation("com.google.code.gson:gson:2.11.0")
+}
 
 tasks.register('sourcesJar', Jar) {
     from sourceSets.main.allJava
@@ -24,13 +33,17 @@ tasks.register('javadocJar', Jar) {
     archiveClassifier = 'javadoc'
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
 }
 
-dependencies {
-    testImplementation "com.google.guava:guava:33.0.0-jre"
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
 }
 
 publishing {
@@ -46,16 +59,8 @@ publishing {
     }
 
     publications {
-        gpr(MavenPublication) {
-            from(components.java)
+        maven(MavenPublication) {
+            from components.java
         }
     }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
-}
-
-javadoc {
-    options.encoding = 'UTF-8'
 }

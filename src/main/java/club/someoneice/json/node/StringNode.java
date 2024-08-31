@@ -1,6 +1,6 @@
 package club.someoneice.json.node;
 
-public class StringNode extends JsonNode<String> {
+public final class StringNode extends JsonNode<String> {
     public StringNode(String obj) {
         super(obj);
     }
