@@ -1,5 +1,6 @@
 package club.someoneice.json.processor;
 
+import club.someoneice.json.JsonParser;
 import club.someoneice.json.node.ArrayNode;
 import club.someoneice.json.node.JsonNode;
 import club.someoneice.json.node.MapNode;
@@ -7,14 +8,6 @@ import club.someoneice.json.node.MapNode;
 import java.util.Iterator;
 
 public class JsonBuilder {
-    private static final String sp = "    ";
-    private static final char KEY_NEXT = 44;
-    private static final char KEY_VALUE = 58;
-    private static final char KEY_ARRAY_START = 91;
-    private static final char KEY_ARRAY_END = 93;
-    private static final char KEY_MAP_START = 123;
-    private static final char KEY_MAP_END = 125;
-
     private JsonBuilder() {}
 
     public static String prettyPrint(JsonNode<?> node) {
@@ -55,37 +48,37 @@ public class JsonBuilder {
         StringBuilder builder = new StringBuilder();
         int count = ct;
         char[] charList = node.toCharArray();
-        if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+        if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
         for (char c : charList) {
-            count = checkAndPut(builder, count, c, KEY_NEXT, sp, KEY_ARRAY_START, KEY_ARRAY_END, KEY_MAP_START, KEY_MAP_END, KEY_VALUE);
+            count = checkAndPut(builder, count, c);
         }
 
         return builder.toString();
     }
 
-    static int checkAndPut(StringBuilder builder, int count, char c, char keyNext, String sp, char keyArrayStart, char keyArrayEnd, char keyMapStart, char keyMapEnd, char keyValue) {
-        if (c == keyNext) {
+    static int checkAndPut(StringBuilder builder, int count, char c) {
+        if (c == JsonParser.KEY_NEXT) {
             builder.append(c).append("\r\n");
-            if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
-        } else if (c == keyArrayStart) {
+            if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
+        } else if (c == JsonParser.KEY_ARRAY_START) {
             builder.append(c).append("\r\n");
-            if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+            if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
             ++count;
-        } else if (c == keyArrayEnd) {
+        } else if (c == JsonParser.KEY_ARRAY_END) {
             --count;
             builder.append("\r\n");
-            if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+            if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
             builder.append(c);
-        } else if (c == keyMapStart) {
+        } else if (c == JsonParser.KEY_MAP_START) {
             builder.append(c).append("\r\n");
-            if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+            if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
             ++count;
-        } else if (c == keyMapEnd) {
+        } else if (c == JsonParser.KEY_MAP_END) {
             --count;
             builder.append("\r\n");
-            if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+            if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
             builder.append(c);
-        } else if (c == keyValue) {
+        } else if (c == JsonParser.KEY_VALUE) {
             builder.append(c).append(" ");
         } else builder.append(c);
         return count;

@@ -1,5 +1,6 @@
 package club.someoneice.json.processor;
 
+import club.someoneice.json.JsonParser;
 import club.someoneice.json.Pair;
 import club.someoneice.json.PairList;
 import club.someoneice.json.api.IJson5Bean;
@@ -13,13 +14,6 @@ import java.util.List;
 
 @SuppressWarnings({"unchecked", "unused"})
 public class Json5Builder {
-    private static final String sp = "    ";
-    private static final char KEY_NEXT = 44;
-    private static final char KEY_VALUE = 58;
-    private static final char KEY_ARRAY_START = 91;
-    private static final char KEY_ARRAY_END = 93;
-    private static final char KEY_MAP_START = 123;
-    private static final char KEY_MAP_END = 125;
     private final List<IJson5Bean> taskTable = new ArrayList<>();
 
     public Json5Builder create() {
@@ -59,19 +53,19 @@ public class Json5Builder {
     private void arrayBuilder(StringBuilder builder, int ct, IJson5Bean bean) {
         Iterator<Pair<IJson5Bean.COMMAND, JsonNode<?>>> iterator = ((PairList<IJson5Bean.COMMAND, JsonNode<?>>) bean.getTask()).getIterator();
         int count = 1 + ct;
-        for (int i = 0; i < count - 1; i++) builder.append(sp);
+        for (int i = 0; i < count - 1; i++) builder.append(JsonParser.SP);
         builder.append("[");
 
         while (iterator.hasNext()) {
             Pair<IJson5Bean.COMMAND, JsonNode<?>> pair = iterator.next();
-            for (int i = 0; i < count; i++) builder.append(sp);
+            for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
 
             arrayCommand(iterator, builder, pair, count);
 
-            for (int i = 0; i < count - 1; i++) builder.append(sp);
+            for (int i = 0; i < count - 1; i++) builder.append(JsonParser.SP);
         }
         builder.append("\r\n");
-        for (int i = 0; i < count - 1; i++) builder.append(sp);
+        for (int i = 0; i < count - 1; i++) builder.append(JsonParser.SP);
         builder.append("]");
     }
 
@@ -109,16 +103,16 @@ public class Json5Builder {
         Iterator<Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>>> iterator = ((PairList<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>>) bean.getTask()).getIterator();
         int count = 1 + ct;
 
-        for (int i = 0; i < count - 1; i++) builder.append(sp);
+        for (int i = 0; i < count - 1; i++) builder.append(JsonParser.SP);
         builder.append("{");
         while (iterator.hasNext()) {
             Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>> cmdPair = iterator.next();
             mapCommand(iterator, builder, cmdPair, count);
-            for (int i = 0; i < count - 1; i++) builder.append(sp);
+            for (int i = 0; i < count - 1; i++) builder.append(JsonParser.SP);
         }
 
         builder.append("\r\n");
-        for (int i = 0; i < count - 1; i++) builder.append(sp);
+        for (int i = 0; i < count - 1; i++) builder.append(JsonParser.SP);
         builder.append("}");
     }
 
@@ -127,7 +121,7 @@ public class Json5Builder {
 
             case NODE: {
                 builder.append("\r\n");
-                for (int i = 0; i < count; i++) builder.append(sp);
+                for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
                 builder.append(pair.getValue().getKey()).append(": ");
                 if (pair.getValue().getValue().getType() == JsonNode.NodeType.Array || pair.getValue().getValue().getType() == JsonNode.NodeType.Map) {
                     builder.append(prettyPrintWithoutFirstLine(JsonBuilder.asString(pair.getValue().getValue()), count));
@@ -139,7 +133,7 @@ public class Json5Builder {
 
             case COMMIT: {
                 builder.append("\r\n");
-                for (int i = 0; i < count; i++) builder.append(sp);
+                for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
                 builder.append("//").append(pair.getValue().getKey());
                 break;
             }
@@ -152,7 +146,7 @@ public class Json5Builder {
             case MAP:
             case ARRAY: {
                 builder.append("\r\n");
-                for (int i = 0; i < count; i++) builder.append(sp);
+                for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
                 builder.append(pair.getValue().getKey()).append(": ").append(build((IJson5Bean) pair.getValue().getValue(), count));
                 if (iterator.hasNext()) builder.append(",");
                 break;
@@ -174,10 +168,10 @@ public class Json5Builder {
         char[] charList = node.toCharArray();
         builder.append(charList[0]);
         builder.append("\r\n");
-        if (count > 0) for (int i = 0; i < count; i++) builder.append(sp);
+        if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
         for (int o = 1; o < charList.length; o++) {
             char c = charList[o];
-            count = JsonBuilder.checkAndPut(builder, count, c, KEY_NEXT, sp, KEY_ARRAY_START, KEY_ARRAY_END, KEY_MAP_START, KEY_MAP_END, KEY_VALUE);
+            count = JsonBuilder.checkAndPut(builder, count, c);
         }
 
         return builder.toString();

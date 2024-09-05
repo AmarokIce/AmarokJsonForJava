@@ -8,15 +8,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class JsonParser {
-    private static final char KEY_SPACE = 32;
-    private static final char KEY_STRING = 34;
-    private static final char KEY_NEXT = 44;
-    private static final char KEY_VALUE = 58;
-    private static final char KEY_ARRAY_START = 91;
-    private static final char KEY_ARRAY_END = 93;
-    private static final char KEY_MAP_START = 123;
-    private static final char KEY_MAP_END = 125;
-    private final char KEY_COUNT = 46;
+    public static final String SP = "    ";
+    public static final char KEY_SPACE = 32;
+    public static final char KEY_STRING = 34;
+    public static final char KEY_NEXT = 44;
+    public static final char KEY_VALUE = 58;
+    public static final char KEY_ARRAY_START = 91;
+    public static final char KEY_ARRAY_END = 93;
+    public static final char KEY_MAP_START = 123;
+    public static final char KEY_MAP_END = 125;
+    public static final char KEY_COUNT = 46;
+
     String raw;
 
     JsonParser(String str) {
@@ -129,7 +131,7 @@ public class JsonParser {
             }
 
             if (c == KEY_SPACE) continue;
-            if (c == KEY_MAP_END) throw new NullPointerException("Here are no map! But its a map 's end!");
+            if (c == KEY_MAP_END) throw new RuntimeException("Here are no map! But its a map 's end!");
 
             if (c == KEY_NEXT) {
                 if (!builder.toString().isEmpty())
@@ -149,7 +151,7 @@ public class JsonParser {
                 continue;
             } else if (c == KEY_ARRAY_START) {
                 int end = findArrayEnd(charList, i);
-                if (end == -1) throw new NullPointerException("Here are no end for this array!");
+                if (end == -1) throw new RuntimeException("Here are no end for this array!");
 
                 StringBuilder array = getArrayFromObject(charList, i, end);
                 node.add(arrayNodeProcessor(array.toString().toCharArray()));
@@ -157,7 +159,7 @@ public class JsonParser {
                 continue;
             } else if (c == KEY_MAP_START) {
                 int end = findMapEnd(charList, i);
-                if (end == -1) throw new NullPointerException("Here are no end for this map!");
+                if (end == -1) throw new RuntimeException("Here are no end for this map!");
                 StringBuilder array = getMapFromObj(charList, i, end);
 
                 node.add(mapNodeProcessor(array.toString().toCharArray()));

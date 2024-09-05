@@ -1,5 +1,6 @@
 package club.someoneice.json.node;
 
+import club.someoneice.json.api.JsonLike;
 import club.someoneice.json.api.exception.NodeCastException;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @SuppressWarnings({"unused", "rawtypes", "unchecked"})
-public class JsonNode<T> {
+public class JsonNode<T> implements JsonLike {
     protected final T obj;
 
     public JsonNode(T obj) {
@@ -174,5 +175,10 @@ public class JsonNode<T> {
     @Override
     public int hashCode() {
         return this.obj.hashCode();
+    }
+
+    @Override
+    public JsonNode<?> asJsonNode() {
+        return this.asTypeNode();
     }
 }
