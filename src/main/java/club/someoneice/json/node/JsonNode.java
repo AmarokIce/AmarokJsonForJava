@@ -1,6 +1,6 @@
 package club.someoneice.json.node;
 
-import club.someoneice.json.api.JsonLike;
+import club.someoneice.json.api.NodeLike;
 import club.someoneice.json.api.exception.NodeCastException;
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @SuppressWarnings({"unused", "rawtypes", "unchecked"})
-public class JsonNode<T> implements JsonLike {
+public class JsonNode<T> implements NodeLike {
     protected final T obj;
 
     public JsonNode(T obj) {
@@ -155,6 +155,10 @@ public class JsonNode<T> implements JsonLike {
         return this.typeOf(NodeType.Null) || this == NullNode.INSTANCE;
     }
 
+    public boolean nonNull() {
+        return !isNull();
+    }
+
     /**
      * @return JsonNode 持有的真实数据。
      */
@@ -178,7 +182,16 @@ public class JsonNode<T> implements JsonLike {
     }
 
     @Override
-    public JsonNode<?> asJsonNode() {
+    public JsonNode asJsonNode() {
         return this.asTypeNode();
+    }
+
+    public static JsonNode asJsonNodeOrEmpty(Object obj) {
+        if (obj instanceof NodeLike) {
+            return ((NodeLike) obj).asJsonNode();
+        }
+
+        JsonNode node = new JsonNode(obj);
+        return node.getType() == NodeType.Other ? NullNode.INSTANCE : node;
     }
 }

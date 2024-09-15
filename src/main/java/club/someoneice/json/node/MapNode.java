@@ -4,10 +4,7 @@ import club.someoneice.json.Pair;
 import club.someoneice.json.PairList;
 import club.someoneice.json.api.TreeNode;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
@@ -17,7 +14,7 @@ public class MapNode extends JsonNode<Map<String, JsonNode<?>>> implements Itera
     }
 
     public MapNode() {
-        super(new HashMap());
+        super(new LinkedHashMap<>());
     }
 
     @Override
@@ -95,5 +92,26 @@ public class MapNode extends JsonNode<Map<String, JsonNode<?>>> implements Itera
     public MapNode copy(Map<String, JsonNode<?>> map) {
         map.putAll(this.obj);
         return new MapNode(map);
+    }
+
+    public static MapNode fromNodeMap(Map<String, JsonNode<?>> map) {
+        return new MapNode(map);
+    }
+
+    public static MapNode fromMapNonnull(Map<String, Object> map) {
+        MapNode node = new MapNode();
+        map.entrySet().stream()
+                .map(it -> new Pair<>(it.getKey(), JsonNode.asJsonNodeOrEmpty(it.getValue())))
+                .filter(it -> it.getValue().nonNull())
+                .forEach(it -> node.put(it.getKey(), it.getValue()));
+        return node;
+    }
+
+    public static MapNode fromMap(Map<String, Object> map) {
+        MapNode node = new MapNode();
+        map.entrySet().stream()
+                .map(it -> new Pair<>(it.getKey(), JsonNode.asJsonNodeOrEmpty(it.getValue())))
+                .forEach(it -> node.put(it.getKey(), it.getValue()));
+        return node;
     }
 }
