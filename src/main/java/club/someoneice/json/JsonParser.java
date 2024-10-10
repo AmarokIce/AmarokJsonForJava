@@ -101,7 +101,7 @@ public class JsonParser {
     }
 
     private JsonNode<?> getNodeWithTypeUnknown(String rawStr) {
-        rawStr = rawStr.replaceAll(" ", "").replaceAll("\n", "").replaceAll("\r", "");
+        rawStr = rawStr.replaceAll("\n", "").replaceAll("\r", "");
         final char[] charList = rawStr.toCharArray();
         final char c = charList[0];
 
@@ -173,16 +173,7 @@ public class JsonParser {
     }
 
     private int findArrayEnd(char[] charList, int start) {
-        int count = 0;
-        for (int i = start; i < charList.length; i++) {
-            if (charList[i] == KEY_ARRAY_START) count++;
-            if (charList[i] == KEY_ARRAY_END) {
-                if (count == 1) return i;
-                count--;
-            }
-        }
-
-        return -1;
+        return findDataNode(charList, start, KEY_ARRAY_START, KEY_ARRAY_END);
     }
 
     private StringBuilder getArrayFromObject(char[] charList, int start, int end) {
@@ -208,19 +199,21 @@ public class JsonParser {
             char c = charList[i];
 
             if (stringStart) {
-                if (c == KEY_STRING) {
-                    stringStart = false;
-                    if (keyEnd) {
-                        valueNode = new StringNode(builder.toString());
-                        builder.delete(0, builder.length());
-                    }
+                if (c != KEY_STRING) {
+                    builder.append(c);
                     continue;
                 }
 
-                builder.append(c);
+                stringStart = false;
+                if (!keyEnd) {
+                    continue;
+                }
+                valueNode = new StringNode(builder.toString());
+                builder.delete(0, builder.length());
                 continue;
             }
 
+            if (c == KEY_SPACE) continue;
             if (c == KEY_VALUE) {
                 if (keyEnd) throw new RuntimeException("What up here? Its had two value?");
 
@@ -242,7 +235,7 @@ public class JsonParser {
 
                 continue;
             } else if (c == KEY_MAP_END) {
-                if (!keyEnd) throw new RuntimeException("Its a array bro.");
+                // if (!keyEnd) throw new RuntimeException("Its a array bro.");
 
                 if (valueNode == NullNode.INSTANCE) valueNode = tryGetNode(builder);
                 node.put(key.toString(), valueNode);
@@ -277,16 +270,7 @@ public class JsonParser {
     }
 
     private int findMapEnd(char[] charList, int start) {
-        int count = 0;
-        for (int i = start; i < charList.length; i++) {
-            if (charList[i] == KEY_MAP_START) count++;
-            if (charList[i] == KEY_MAP_END) {
-                if (count == 1) return i;
-                count--;
-            }
-        }
-
-        return -1;
+        return findDataNode(charList, start, KEY_MAP_START, KEY_MAP_END);
     }
 
     private StringBuilder getMapFromObj(char[] charList, int start, int end) {
@@ -384,6 +368,19 @@ public class JsonParser {
         stream.close();
 
         return new String(bytes);
+    }
+
+    private int findDataNode(char[] charList, int start, char keyMapStart, char keyMapEnd) {
+        int count = 0;
+        for (int i = start; i < charList.length; i++) {
+            if (charList[i] == keyMapStart) count++;
+            if (charList[i] == keyMapEnd) {
+                if (count == 1) return i;
+                count--;
+            }
+        }
+
+        return -1;
     }
 
     private enum NumberType {
