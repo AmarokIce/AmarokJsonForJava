@@ -1,11 +1,9 @@
 package club.someoneice.json.node;
 
+import club.someoneice.json.api.NodeCodec;
 import club.someoneice.json.api.TreeNode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
@@ -75,6 +73,11 @@ public class ArrayNode extends JsonNode<List<JsonNode<?>>> implements Iterable<J
     @Override
     public ArrayNode copy() {
         return new ArrayNode(new ArrayList<>(this.obj));
+    }
+
+    public ArrayNode copy(ArrayNode node) {
+        node.addAll(this.getObj());
+        return node;
     }
 
     public ArrayNode copy(List<JsonNode<?>> list) {
