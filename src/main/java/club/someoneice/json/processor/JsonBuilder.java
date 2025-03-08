@@ -47,9 +47,29 @@ public class JsonBuilder {
     public static String prettyPrint(String node, int ct) {
         StringBuilder builder = new StringBuilder();
         int count = ct;
+
+        boolean rawInput = false;
+        boolean skinNext = false;
+
         char[] charList = node.toCharArray();
         for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
         for (char c : charList) {
+            if (skinNext) {
+                builder.append(c);
+                skinNext = false;
+                continue;
+            }
+
+            if (c == JsonParser.KEY_STRING) {
+                rawInput = !rawInput;
+            }
+
+            if (rawInput) {
+                skinNext = c == '\\';
+                builder.append(c);
+                continue;
+            }
+
             count = checkAndPut(builder, count, c);
         }
 

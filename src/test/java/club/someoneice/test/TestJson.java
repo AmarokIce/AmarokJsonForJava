@@ -10,10 +10,10 @@ public class TestJson {
         MapNode map = new MapNode();
 
         ArrayNode node = new ArrayNode();
-        node.add(new StringNode("test"));
+        node.add(new StringNode("\"test:test\""));
 
         map.put("array", node);
-        map.put("test", new StringNode("test"));
+        map.put("test", new StringNode("test:test"));
 
         String out = JsonBuilder.prettyPrint(map);
         System.out.println(out);
