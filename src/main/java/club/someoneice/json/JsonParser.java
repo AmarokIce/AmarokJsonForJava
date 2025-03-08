@@ -118,7 +118,7 @@ public class JsonParser {
             char c = charList[i];
 
             if (stringStart) {
-                if (c == KEY_STRING) {
+                if (c != KEY_STRING) {
                     builder.append(c);
                     continue;
                 }
