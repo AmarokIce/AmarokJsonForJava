@@ -40,7 +40,7 @@ public class Json5Builder {
 
     private String build(IJson5Bean bean, int ct) {
         StringBuilder builder = new StringBuilder();
-        builder.append("\r\n");
+        builder.append("\n");
         if (!bean.isMap()) {
             arrayBuilder(builder, ct, bean);
         } else {
@@ -64,7 +64,7 @@ public class Json5Builder {
 
             for (int i = 0; i < count - 1; i++) builder.append(JsonParser.SP);
         }
-        builder.append("\r\n");
+        builder.append("\n");
         for (int i = 0; i < count - 1; i++) builder.append(JsonParser.SP);
         builder.append("]");
     }
@@ -72,26 +72,26 @@ public class Json5Builder {
     private void arrayCommand(Iterator<Pair<IJson5Bean.COMMAND, JsonNode<?>>> iterator, StringBuilder builder, Pair<IJson5Bean.COMMAND, JsonNode<?>> pair, int count) {
         switch (pair.getKey()) {
             case NODE: {
-                builder.append("\r\n");
+                builder.append("\n");
                 builder.append(JsonBuilder.prettyPrint(JsonBuilder.asString(pair.getValue()), count));
                 if (iterator.hasNext()) builder.append(",");
                 break;
             }
 
             case COMMIT: {
-                builder.append("\r\n");
+                builder.append("\n");
                 builder.append("//").append(pair.getValue().toString());
                 break;
             }
 
             case LINE: {
-                builder.append("\r\n");
+                builder.append("\n");
                 break;
             }
 
             case MAP:
             case ARRAY: {
-                builder.append("\r\n");
+                builder.append("\n");
                 builder.append(build((IJson5Bean) pair.getValue(), count));
                 if (iterator.hasNext()) builder.append(",");
                 break;
@@ -111,7 +111,7 @@ public class Json5Builder {
             for (int i = 0; i < count - 1; i++) builder.append(JsonParser.SP);
         }
 
-        builder.append("\r\n");
+        builder.append("\n");
         for (int i = 0; i < count - 1; i++) builder.append(JsonParser.SP);
         builder.append("}");
     }
@@ -120,7 +120,7 @@ public class Json5Builder {
         switch (pair.getKey()) {
 
             case NODE: {
-                builder.append("\r\n");
+                builder.append("\n");
                 for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
                 builder.append(pair.getValue().getKey()).append(": ");
                 if (pair.getValue().getValue().getType() == JsonNode.NodeType.Array || pair.getValue().getValue().getType() == JsonNode.NodeType.Map) {
@@ -132,20 +132,20 @@ public class Json5Builder {
             }
 
             case COMMIT: {
-                builder.append("\r\n");
+                builder.append("\n");
                 for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
                 builder.append("//").append(pair.getValue().getKey());
                 break;
             }
 
             case LINE: {
-                builder.append("\r\n");
+                builder.append("\n");
                 break;
             }
 
             case MAP:
             case ARRAY: {
-                builder.append("\r\n");
+                builder.append("\n");
                 for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
                 builder.append(pair.getValue().getKey()).append(": ").append(build((IJson5Bean) pair.getValue().getValue(), count));
                 if (iterator.hasNext()) builder.append(",");
@@ -167,7 +167,7 @@ public class Json5Builder {
         int count = ct + 1;
         char[] charList = node.toCharArray();
         builder.append(charList[0]);
-        builder.append("\r\n");
+        builder.append("\n");
         if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
         for (int o = 1; o < charList.length; o++) {
             char c = charList[o];

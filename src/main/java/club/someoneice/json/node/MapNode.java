@@ -114,4 +114,34 @@ public class MapNode extends JsonNode<Map<String, JsonNode<?>>> implements Itera
                 .forEach(it -> node.put(it.getKey(), it.getValue()));
         return node;
     }
+
+    public MapNode put(String name, String str) {
+        this.put(name, new StringNode(str));
+        return this;
+    }
+
+    public MapNode put(String name, int i) {
+        this.put(name, new IntegerNode(i));
+        return this;
+    }
+
+    public MapNode put(String name, long l) {
+        this.put(name, new LongNode(l));
+        return this;
+    }
+
+    public MapNode put(String name, double d) {
+        this.put(name, new DoubleNode(d));
+        return this;
+    }
+
+    public MapNode put(String name, float f) {
+        this.put(name, new FloatNode(f));
+        return this;
+    }
+
+    public MapNode put(String name, boolean b) {
+        this.put(name, new BooleanNode(b));
+        return this;
+    }
 }

@@ -48,7 +48,7 @@ public class JsonBuilder {
         StringBuilder builder = new StringBuilder();
         int count = ct;
         char[] charList = node.toCharArray();
-        if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
+        for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
         for (char c : charList) {
             count = checkAndPut(builder, count, c);
         }
@@ -57,30 +57,40 @@ public class JsonBuilder {
     }
 
     static int checkAndPut(StringBuilder builder, int count, char c) {
-        if (c == JsonParser.KEY_NEXT) {
-            builder.append(c).append("\r\n");
-            if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
-        } else if (c == JsonParser.KEY_ARRAY_START) {
-            builder.append(c).append("\r\n");
-            if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
+        switch (c) {
+        case JsonParser.KEY_NEXT:
+            builder.append(c).append("\n");
+            for (int i = 0; i < count; i++) {
+                builder.append(JsonParser.SP);
+            }
+            break;
+
+        case JsonParser.KEY_MAP_START:
+        case JsonParser.KEY_ARRAY_START:
+            builder.append(c).append("\n");
             ++count;
-        } else if (c == JsonParser.KEY_ARRAY_END) {
+            for (int i = 0; i < count; i++) {
+                builder.append(JsonParser.SP);
+            }
+            break;
+
+        case JsonParser.KEY_MAP_END:
+        case JsonParser.KEY_ARRAY_END:
             --count;
-            builder.append("\r\n");
-            if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
+            builder.append("\n");
+            for (int i = 0; i < count; i++) {
+                builder.append(JsonParser.SP);
+            }
             builder.append(c);
-        } else if (c == JsonParser.KEY_MAP_START) {
-            builder.append(c).append("\r\n");
-            if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
-            ++count;
-        } else if (c == JsonParser.KEY_MAP_END) {
-            --count;
-            builder.append("\r\n");
-            if (count > 0) for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
-            builder.append(c);
-        } else if (c == JsonParser.KEY_VALUE) {
+            break;
+
+        case JsonParser.KEY_VALUE:
             builder.append(c).append(" ");
-        } else builder.append(c);
+            break;
+
+        default:
+            builder.append(c);
+        }
         return count;
     }
 
@@ -95,7 +105,7 @@ public class JsonBuilder {
         while (itor.hasNext()) {
             String key = itor.next();
             JsonNode<?> value = map.get(key);
-            builder.append(key).append(":");
+            builder.append(String.format("\"%s\"", key)).append(":");
             createAndAppend(builder, value, itor.hasNext());
         }
     }
