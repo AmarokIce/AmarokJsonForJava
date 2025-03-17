@@ -30,40 +30,54 @@ But Jackson's size made my post-package program look bloated. In some of the sof
 
 ## Let's go start
 
-### Gradle get it
+### Maven Central
 
-[Github Package](https://github.com/AmarokIce/AmarokJsonForJava/packages/1929112)
-
-[Jitpack.io](https://jitpack.io/#AmarokIce/AmarokJsonForJava)
-
-Gradle:
 ```groove
 repositories {
-    maven {
-        url 'http://maven.snowlyicewolf.club/'
-        allowInsecureProtocol = true
-    }
+	mavenCentral()
 }
 
 dependencies {
-    implementation "club.someoneice.json:amarok-json-for-java:1.4"
+    implementation "club.snowlyicewolf:amarok-json-for-java:1.7.6"
 }
 ```
 
-Gradle Kotlin:
+### Github Packet
+[Chilk me go to Github Package](https://github.com/AmarokIce/AmarokJsonForJava/packages/1929112)
+
+### JitPack
+[Chilk me go to JitPack IO](https://jitpack.io/#AmarokIce/AmarokJsonForJava)
+
+### Amarok Maven
+Groove:
+```groove
+repositories {
+	maven {
+	    name = "Amarok Maven"
+	    url = "http://maven.snowlyicewolf.club"
+	    allowInsecureProtocol = true                // Append this if Gradle 7.4+
+	}
+}
+
+dependencies {
+    implementation "club.someoneice.json:amarok-json-for-java:1.7.6"
+}
+```
+
+KotlinDSL:
 ```kotlin script
 repositories {
     maven {
+        name = "Amarok Maven"
         url = uri("http://maven.snowlyicewolf.club")
         isAllowInsecureProtocol true
     }
 }
 
 dependencies {
-    implementation("club.someoneice.json:amarok-json-for-java:1.6")
+    implementation("club.someoneice.json:amarok-json-for-java:1.7.6")
 }
 ```
-
 ### From Json
 
 Set up our Json File, Json String, and then instance the [JSON](src/main/java/club/someoneice/json/JSON.java). Any you can use Json or Json5, but don't use Json Handler to processor Json5.

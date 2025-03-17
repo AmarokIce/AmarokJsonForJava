@@ -8,10 +8,11 @@ plugins {
     id 'java'
     id 'idea'
     id 'maven-publish'
+    id 'org.jreleaser' version '1.17.0'
 }
 
-group 'club.someoneice.json'
-version '1.7.6'
+group = project.groupId
+version = project.version
 
 repositories {
     mavenLocal()
@@ -37,30 +38,85 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
 }
 
+javadoc {
+    options.encoding = 'UTF-8'
+}
+
 java {
     withJavadocJar()
     withSourcesJar()
 }
 
-javadoc {
-    options.encoding = 'UTF-8'
-}
-
 publishing {
     repositories {
         maven {
-            name = "GithubPackage"
-            url = uri("https://maven.pkg.github.com/amarokice/amarokjsonforjava")
-            credentials {
-                username = "AmarokIce"
-                password = System.getenv("GITHUB_TOKEN")
-            }
+            url = layout.buildDirectory.dir('staging-deploy')
         }
+
+        // maven {
+        //     name = "GithubPackage"
+        //     url = uri("https://maven.pkg.github.com/amarokice/amarokjsonforjava")
+        //     credentials {
+        //         username = "AmarokIce"
+        //         password = System.getenv("GITHUB_TOKEN")
+        //     }
+        // }
     }
+
 
     publications {
         maven(MavenPublication) {
+            groupId = project.group
+            artifactId = project.artifactId
+            version = project.version
+
             from components.java
+
+            pom {
+                name = project.artifactId
+                description = 'The lightweight and powerful Java-implemented Json parsing library provides the lightest and most accurate parsing.'
+                url = 'https://wolf.snowlyicewolf.club'
+                licenses {
+                    license {
+                        name = 'Mozilla Public License ver-2.0'
+                        url = 'https://www.mozilla.org/en-US/MPL/2.0/'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'amarokice'
+                        name = ' Amaruq·Illaujaq'
+                        email = 'snowlyicewolf@outlook.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/AmarokIce/AmarokJsonForJava.git'
+                    developerConnection = 'scm:git:https://github.com:AmarokIce/AmarokJsonForJava.git'
+                    url = 'https://github.com/AmarokIce/AmarokJsonForJava'
+                }
+            }
+        }
+    }
+}
+
+jreleaser {
+    signing {
+        active = 'ALWAYS'
+        armored = true
+        mode = 'FILE'
+        publicKey = '/Users/snowl/.jreleaser/.gpg/Amarokice_public.gpg'
+        secretKey = '/Users/snowl/.jreleaser/.gpg/Amarokice_SECRET.gpg'
+    }
+
+    deploy {
+        maven {
+            mavenCentral {
+                sonatype {
+                    active = 'ALWAYS'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    stagingRepository('build/staging-deploy')
+                }
+            }
         }
     }
 }

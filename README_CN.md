@@ -28,20 +28,52 @@ Amarok's Json For Java 是一个基于 Java 编写的 Json 解析库，能够较
 
 ## 让我们开始
 
-### Gradle
-
-[Github Package](https://github.com/AmarokIce/AmarokJsonForJava/packages/1929112)
+### Maven 中心
 
 ```groove
 repositories {
+	mavenCentral()
+}
+
+dependencies {
+    implementation "club.snowlyicewolf:amarok-json-for-java:1.7.6"
+}
+```
+
+### Github Packet
+[点击此处前往 Github Package](https://github.com/AmarokIce/AmarokJsonForJava/packages/1929112)
+
+### JitPack
+[点击此处前往 JitPack IO](https://jitpack.io/#AmarokIce/AmarokJsonForJava)
+
+### Amarok Maven
+Groove:
+```groove
+repositories {
+	maven {
+	    name = "Amarok Maven"
+	    url = "http://maven.snowlyicewolf.club"
+	    allowInsecureProtocol = true                // 如果是 Gradle 7.4+ 必须加上这个
+	}
+}
+
+dependencies {
+    implementation "club.someoneice.json:amarok-json-for-java:1.7.6"
+}
+```
+
+KotlinDSL:
+```kotlin script
+repositories {
     maven {
-        url 'http://maven.snowlyicewolf.club/'
-        allowInsecureProtocol = true
+        name = "Amarok Maven"
+        url = uri("http://maven.snowlyicewolf.club")
+        isAllowInsecureProtocol true
     }
 }
 
 dependencies {
-    implementation "club.someoneice.json:amarok-json-for-java:1.4"
+    implementation("club.someoneice.json:amarok-json-for-java:1.7.6")
 }
 ```
 
