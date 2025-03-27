@@ -12,8 +12,6 @@ public interface IJson5Bean {
     enum COMMAND {
         NODE,
         COMMIT,
-        LINE,
-        ARRAY,
-        MAP
+        LINE
     }
 }

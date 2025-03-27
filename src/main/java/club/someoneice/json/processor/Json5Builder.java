@@ -20,8 +20,9 @@ public class Json5Builder {
         return new Json5Builder();
     }
 
-    public void put(IJson5Bean bean) {
+    public <T extends IJson5Bean> T put(T bean) {
         this.taskTable.add(bean);
+        return bean;
     }
 
     public void clearTask() {
@@ -60,7 +61,7 @@ public class Json5Builder {
             Pair<IJson5Bean.COMMAND, JsonNode<?>> pair = iterator.next();
             for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
 
-            arrayCommand(iterator, builder, pair, count);
+            arrayCommand(iterator.hasNext(), builder, pair, count);
 
             for (int i = 0; i < count - 1; i++) builder.append(JsonParser.SP);
         }
@@ -69,31 +70,26 @@ public class Json5Builder {
         builder.append("]");
     }
 
-    private void arrayCommand(Iterator<Pair<IJson5Bean.COMMAND, JsonNode<?>>> iterator, StringBuilder builder, Pair<IJson5Bean.COMMAND, JsonNode<?>> pair, int count) {
+    private void arrayCommand(boolean hasNext, StringBuilder builder, Pair<IJson5Bean.COMMAND, JsonNode<?>> pair, int count) {
+        builder.append("\n");
         switch (pair.getKey()) {
             case NODE: {
-                builder.append("\n");
-                builder.append(JsonBuilder.prettyPrint(JsonBuilder.asString(pair.getValue()), count));
-                if (iterator.hasNext()) builder.append(",");
+                if (pair.getValue() instanceof IJson5Bean) {
+                    builder.append(build((IJson5Bean) pair.getValue(), count));
+                } else {
+                    builder.append(JsonBuilder.prettyPrint(JsonBuilder.asString(pair.getValue()), count));
+                }
+
+                if (hasNext) builder.append(",");
                 break;
             }
 
             case COMMIT: {
-                builder.append("\n");
                 builder.append("//").append(pair.getValue().toString());
                 break;
             }
 
             case LINE: {
-                builder.append("\n");
-                break;
-            }
-
-            case MAP:
-            case ARRAY: {
-                builder.append("\n");
-                builder.append(build((IJson5Bean) pair.getValue(), count));
-                if (iterator.hasNext()) builder.append(",");
                 break;
             }
         }
@@ -107,7 +103,7 @@ public class Json5Builder {
         builder.append("{");
         while (iterator.hasNext()) {
             Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>> cmdPair = iterator.next();
-            mapCommand(iterator, builder, cmdPair, count);
+            mapCommand(iterator.hasNext(), builder, cmdPair, count);
             for (int i = 0; i < count - 1; i++) builder.append(JsonParser.SP);
         }
 
@@ -116,39 +112,37 @@ public class Json5Builder {
         builder.append("}");
     }
 
-    private void mapCommand(Iterator<Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>>> iterator, StringBuilder builder, Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>> pair, int count) {
+    private void mapCommand(boolean hasNext, StringBuilder builder, Pair<IJson5Bean.COMMAND, Pair<String, JsonNode<?>>> pair, int count) {
+        builder.append("\n");
+        String keyInput = pair.getValue().getKey();
+        keyInput = keyInput.contains(" ") ? String.format("\"%s\"", keyInput) : keyInput;
         switch (pair.getKey()) {
 
             case NODE: {
-                builder.append("\n");
                 for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
-                builder.append(pair.getValue().getKey()).append(": ");
+                if (pair.getValue().getValue() instanceof IJson5Bean) {
+                    builder.append(keyInput).append(": ").append(build((IJson5Bean) pair.getValue().getValue(), count));
+
+                    if (hasNext) builder.append(",");
+                    break;
+                }
+
+                builder.append(keyInput).append(": ");
                 if (pair.getValue().getValue().getType() == JsonNode.NodeType.Array || pair.getValue().getValue().getType() == JsonNode.NodeType.Map) {
                     builder.append(prettyPrintWithoutFirstLine(JsonBuilder.asString(pair.getValue().getValue()), count));
                 } else builder.append(JsonBuilder.prettyPrint(JsonBuilder.asString(pair.getValue().getValue())));
 
-                if (iterator.hasNext()) builder.append(",");
+                if (hasNext) builder.append(",");
                 break;
             }
 
             case COMMIT: {
-                builder.append("\n");
                 for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
-                builder.append("//").append(pair.getValue().getKey());
+                builder.append("//").append(keyInput);
                 break;
             }
 
             case LINE: {
-                builder.append("\n");
-                break;
-            }
-
-            case MAP:
-            case ARRAY: {
-                builder.append("\n");
-                for (int i = 0; i < count; i++) builder.append(JsonParser.SP);
-                builder.append(pair.getValue().getKey()).append(": ").append(build((IJson5Bean) pair.getValue().getValue(), count));
-                if (iterator.hasNext()) builder.append(",");
                 break;
             }
         }
@@ -160,6 +154,14 @@ public class Json5Builder {
 
     public ObjectBean getObjectBean() {
         return new ObjectBean();
+    }
+
+    public ArrayBean createArrayBean() {
+        return this.put(new ArrayBean());
+    }
+
+    public ObjectBean createObjectBean() {
+        return this.put(new ObjectBean());
     }
 
     String prettyPrintWithoutFirstLine(String node, int ct) {
@@ -218,13 +220,15 @@ public class Json5Builder {
             return this;
         }
 
+        @Deprecated
         public ArrayBean addBean(ArrayBean bean) {
-            this.commandSet.put(COMMAND.ARRAY, bean);
+            this.commandSet.put(COMMAND.NODE, bean);
             return this;
         }
 
+        @Deprecated
         public ArrayBean addBean(ObjectBean bean) {
-            this.commandSet.put(COMMAND.MAP, bean);
+            this.commandSet.put(COMMAND.NODE, bean);
             return this;
         }
     }
@@ -270,14 +274,21 @@ public class Json5Builder {
             return this;
         }
 
+        @Deprecated
         public ObjectBean addBean(String key, ArrayBean bean) {
-            this.commandSet.put(COMMAND.ARRAY, new Pair<>(key, bean));
+            this.commandSet.put(COMMAND.NODE, new Pair<>(key, bean));
             return this;
         }
 
+        @Deprecated
         public ObjectBean addBean(String key, ObjectBean bean) {
-            this.commandSet.put(COMMAND.MAP, new Pair<>(key, bean));
+            this.commandSet.put(COMMAND.NODE, new Pair<>(key, bean));
             return this;
         }
+    }
+
+    @Override
+    public String toString() {
+        return this.build();
     }
 }
