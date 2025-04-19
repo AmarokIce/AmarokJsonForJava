@@ -2,13 +2,10 @@ package club.someoneice.json.node;
 
 import club.someoneice.json.api.TreeNode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class ArrayNode extends JsonNode<List<JsonNode<?>>> implements Iterable<JsonNode<?>>, TreeNode<JsonNode<?>> {
     public ArrayNode(List<JsonNode<?>> obj) {
         super(obj);
@@ -20,7 +17,7 @@ public class ArrayNode extends JsonNode<List<JsonNode<?>>> implements Iterable<J
 
     @Override
     public List<JsonNode<?>> getObj() {
-        return (List<JsonNode<?>>) super.getObj();
+        return super.getObj();
     }
 
     @Override
@@ -43,7 +40,7 @@ public class ArrayNode extends JsonNode<List<JsonNode<?>>> implements Iterable<J
     }
 
     public JsonNode<?> get(int i) {
-        return (JsonNode<?>) this.obj.get(i);
+        return this.obj.get(i);
     }
 
     public void clear() {
@@ -114,6 +111,16 @@ public class ArrayNode extends JsonNode<List<JsonNode<?>>> implements Iterable<J
 
     public ArrayNode add(boolean b) {
         this.add(new BooleanNode(b));
+        return this;
+    }
+
+    public ArrayNode add(List<JsonNode<?>> list) {
+        this.add(new ArrayNode(list));
+        return this;
+    }
+
+    public ArrayNode add(Map<String, JsonNode<?>> map) {
+        this.add(new MapNode(map));
         return this;
     }
 }

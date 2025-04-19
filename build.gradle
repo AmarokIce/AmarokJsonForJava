@@ -53,14 +53,14 @@ publishing {
             url = layout.buildDirectory.dir('staging-deploy')
         }
 
-        // maven {
-        //     name = "GithubPackage"
-        //     url = uri("https://maven.pkg.github.com/amarokice/amarokjsonforjava")
-        //     credentials {
-        //         username = "AmarokIce"
-        //         password = System.getenv("GITHUB_TOKEN")
-        //     }
-        // }
+        maven {
+            name = "GithubPackage"
+            url = uri("https://maven.pkg.github.com/amarokice/amarokjsonforjava")
+            credentials {
+                username = "AmarokIce"
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 
 

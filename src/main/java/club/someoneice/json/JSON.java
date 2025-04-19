@@ -1,12 +1,12 @@
 package club.someoneice.json;
 
-import club.someoneice.json.node.ArrayNode;
-import club.someoneice.json.node.JsonNode;
-import club.someoneice.json.node.MapNode;
+import club.someoneice.json.api.JsonVar;
+import club.someoneice.json.node.*;
 
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -112,7 +112,7 @@ public final class JSON {
         return tryPullAsClass(clazz, jsonMap);
     }
 
-    public <T> T tryPullAsClass(Class<? extends T> clazz, MapNode jsonMap) throws InstantiationException, IllegalAccessException {
+    public <T> T tryPullAsClass(Class<T> clazz, MapNode jsonMap) throws InstantiationException, IllegalAccessException {
         T targetClass = clazz.newInstance();
         Field[] fields = targetClass.getClass().getDeclaredFields();
 
@@ -123,6 +123,36 @@ public final class JSON {
         }
 
         return targetClass;
+    }
+
+    public <T> MapNode tryPushFromClass(T clazz) throws IllegalAccessException {
+        final MapNode root = new MapNode();
+        final Field[] fields = clazz.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            boolean flag = field.isAnnotationPresent(JsonVar.class);
+            if (!flag && Modifier.isStatic(field.getModifiers())) {
+                continue;
+            }
+
+            final String name = flag ? field.getAnnotation(JsonVar.class).value() : field.getName();
+            final Object obj = field.get(clazz);
+            final String clazzName = obj.getClass().getSimpleName();
+            final JsonNode<?> node;
+            if (obj instanceof String) {
+                node = new StringNode((String) obj);
+            } else if (obj instanceof Integer) {
+                node = new IntegerNode((int) obj);
+            } else if (obj instanceof Number) {
+                node = new DoubleNode((double) obj);
+            } else if (obj instanceof Boolean) {
+                node = new BooleanNode((boolean) obj);
+            } else continue;
+
+            root.put(name, node);
+        }
+
+        return root;
     }
 
     public <T> List<T> tryPullAsClassList(Class<? extends T> clazz, String str) throws InstantiationException, IllegalAccessException {

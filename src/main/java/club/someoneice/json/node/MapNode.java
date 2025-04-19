@@ -7,7 +7,7 @@ import club.someoneice.json.api.TreeNode;
 import java.util.*;
 import java.util.stream.Stream;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class MapNode extends JsonNode<Map<String, JsonNode<?>>> implements Iterable<Pair<String, JsonNode<?>>>, TreeNode<Pair<String, JsonNode<?>>> {
     public MapNode(Map<String, JsonNode<?>> obj) {
         super(obj);
@@ -24,7 +24,7 @@ public class MapNode extends JsonNode<Map<String, JsonNode<?>>> implements Itera
 
     @Override
     public Map<String, JsonNode<?>> getObj() {
-        return (Map<String, JsonNode<?>>) super.getObj();
+        return super.getObj();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class MapNode extends JsonNode<Map<String, JsonNode<?>>> implements Itera
     }
 
     public JsonNode<?> get(String key) {
-        return (JsonNode<?>) this.obj.get(key);
+        return this.obj.get(key);
     }
 
     public JsonNode<?> put(String key, JsonNode<?> value) {
@@ -142,6 +142,16 @@ public class MapNode extends JsonNode<Map<String, JsonNode<?>>> implements Itera
 
     public MapNode put(String name, boolean b) {
         this.put(name, new BooleanNode(b));
+        return this;
+    }
+
+    public MapNode put(String name, List<JsonNode<?>> list) {
+        this.put(name, new ArrayNode(list));
+        return this;
+    }
+
+    public MapNode put(String name, Map<String, JsonNode<?>> map) {
+        this.put(name, new MapNode(map));
         return this;
     }
 }
