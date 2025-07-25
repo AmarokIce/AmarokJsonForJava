@@ -37,7 +37,19 @@ public class MapNode extends JsonNode<Map<String, JsonNode<?>>> implements Itera
     }
 
     public JsonNode<?> get(String key) {
-        return this.obj.get(key);
+        return this.obj.getOrDefault(key, NullNode.INSTANCE);
+    }
+
+    public JsonNode<?> getAsTypeOrNull(String key, JsonNode.NodeType nodeType) {
+        return this.get(key).asTypeOrNull(nodeType);
+    }
+
+    public JsonNode<?> getAsTypeOrThrow(String key, JsonNode.NodeType nodeType) {
+        return this.get(key).asTypeNodeOrThrow(nodeType);
+    }
+
+    public JsonNode<?> getAsTypeOrThrow(String key, JsonNode.NodeType nodeType, String message) {
+        return this.get(key).asTypeNodeOrThrow(nodeType, message);
     }
 
     public JsonNode<?> put(String key, JsonNode<?> value) {
@@ -52,8 +64,9 @@ public class MapNode extends JsonNode<Map<String, JsonNode<?>>> implements Itera
         return this.put(pair.getKey(), pair.getValue());
     }
 
-    public void clear() {
+    public MapNode clear() {
         this.obj.clear();
+        return this;
     }
 
     public boolean isEmpty() {

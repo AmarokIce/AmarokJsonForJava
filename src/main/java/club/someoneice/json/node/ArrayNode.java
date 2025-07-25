@@ -40,11 +40,29 @@ public class ArrayNode extends JsonNode<List<JsonNode<?>>> implements Iterable<J
     }
 
     public JsonNode<?> get(int i) {
-        return this.obj.get(i);
+        if (i < 0 || i >= this.obj.size()) {
+            return NullNode.INSTANCE;
+        }
+
+        final JsonNode<?> obj = this.obj.get(i);
+        return Objects.isNull(obj) ? NullNode.INSTANCE : obj;
     }
 
-    public void clear() {
+    public JsonNode<?> getAsTypeOrNull(int i, JsonNode.NodeType nodeType) {
+        return this.get(i).asTypeOrNull(nodeType);
+    }
+
+    public JsonNode<?> getAsTypeOrThrow(int i, JsonNode.NodeType nodeType) {
+        return this.get(i).asTypeNodeOrThrow(nodeType);
+    }
+
+    public JsonNode<?> getAsTypeOrThrow(int i, JsonNode.NodeType nodeType, String message) {
+        return this.get(i).asTypeNodeOrThrow(nodeType, message);
+    }
+
+    public ArrayNode clear() {
         this.obj.clear();
+        return this;
     }
 
     public boolean isEmpty() {
