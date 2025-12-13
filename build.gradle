@@ -99,6 +99,7 @@ publishing {
     }
 }
 
+/*
 jreleaser {
     signing {
         active = 'ALWAYS'
@@ -119,4 +120,4 @@ jreleaser {
             }
         }
     }
-}
+}*/
