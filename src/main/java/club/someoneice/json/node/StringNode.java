@@ -12,7 +12,7 @@ public final class StringNode extends JsonNode<String> {
 
     @Override
     public StringNode copy() {
-        return new StringNode(obj);
+        return new StringNode(this.obj);
     }
 
     @Override

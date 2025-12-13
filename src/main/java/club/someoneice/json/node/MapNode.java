@@ -17,21 +17,6 @@ public class MapNode extends JsonNode<Map<String, JsonNode<?>>> implements Itera
         super(new LinkedHashMap<>());
     }
 
-    @Override
-    public NodeType getType() {
-        return NodeType.Map;
-    }
-
-    @Override
-    public Map<String, JsonNode<?>> getObj() {
-        return super.getObj();
-    }
-
-    @Override
-    public void addChild(Pair<String, JsonNode<?>>... child) {
-        Arrays.stream(child).forEach(it -> this.put(it.getKey(), it.getValue()));
-    }
-
     public void addAll(MapNode mapNode) {
         this.obj.putAll(mapNode.getObj());
     }
@@ -85,21 +70,6 @@ public class MapNode extends JsonNode<Map<String, JsonNode<?>>> implements Itera
 
     public Stream<Pair<String, JsonNode<?>>> stream() {
         return this.asPairList().stream();
-    }
-
-    @Override
-    public Iterator<Pair<String, JsonNode<?>>> iterator() {
-        return this.asPairList().iterator();
-    }
-
-    @Override
-    public MapNode asTypeNode() {
-        return this;
-    }
-
-    @Override
-    public MapNode copy() {
-        return new MapNode(new HashMap(this.obj));
     }
 
     public MapNode copy(Map<String, JsonNode<?>> map) {
@@ -166,5 +136,35 @@ public class MapNode extends JsonNode<Map<String, JsonNode<?>>> implements Itera
     public MapNode put(String name, Map<String, JsonNode<?>> map) {
         this.put(name, new MapNode(map));
         return this;
+    }
+
+    @Override
+    public NodeType getType() {
+        return NodeType.Map;
+    }
+
+    @Override
+    public Map<String, JsonNode<?>> getObj() {
+        return super.getObj();
+    }
+
+    @Override
+    public void addChild(Pair<String, JsonNode<?>>... child) {
+        Arrays.stream(child).forEach(it -> this.put(it.getKey(), it.getValue()));
+    }
+
+    @Override
+    public Iterator<Pair<String, JsonNode<?>>> iterator() {
+        return this.asPairList().iterator();
+    }
+
+    @Override
+    public MapNode asTypeNode() {
+        return this;
+    }
+
+    @Override
+    public MapNode copy() {
+        return new MapNode(new HashMap(this.obj));
     }
 }

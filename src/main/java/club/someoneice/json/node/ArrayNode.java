@@ -6,28 +6,13 @@ import java.util.*;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"rawtypes", "unchecked", "unused"})
-public class ArrayNode extends JsonNode<List<JsonNode<?>>> implements Iterable<JsonNode<?>>, TreeNode<JsonNode<?>> {
+public class ArrayNode extends JsonNode<List<JsonNode<?>>> implements TreeNode<JsonNode<?>> {
     public ArrayNode(List<JsonNode<?>> obj) {
         super(obj);
     }
 
     public ArrayNode() {
         super(new ArrayList());
-    }
-
-    @Override
-    public List<JsonNode<?>> getObj() {
-        return super.getObj();
-    }
-
-    @Override
-    public NodeType getType() {
-        return NodeType.Array;
-    }
-
-    @Override
-    public void addChild(JsonNode<?>... child) {
-        Arrays.stream(child).forEach(this::add);
     }
 
     public JsonNode<?> add(JsonNode<?> obj) {
@@ -75,21 +60,6 @@ public class ArrayNode extends JsonNode<List<JsonNode<?>>> implements Iterable<J
 
     public Stream<JsonNode<?>> stream() {
         return this.obj.stream();
-    }
-
-    @Override
-    public Iterator<JsonNode<?>> iterator() {
-        return this.obj.iterator();
-    }
-
-    @Override
-    public ArrayNode asTypeNode() {
-        return this;
-    }
-
-    @Override
-    public ArrayNode copy() {
-        return new ArrayNode(new ArrayList<>(this.obj));
     }
 
     public ArrayNode copy(ArrayNode node) {
@@ -140,5 +110,35 @@ public class ArrayNode extends JsonNode<List<JsonNode<?>>> implements Iterable<J
     public ArrayNode add(Map<String, JsonNode<?>> map) {
         this.add(new MapNode(map));
         return this;
+    }
+
+    @Override
+    public List<JsonNode<?>> getObj() {
+        return super.getObj();
+    }
+
+    @Override
+    public NodeType getType() {
+        return NodeType.Array;
+    }
+
+    @Override
+    public void addChild(JsonNode<?>... child) {
+        Arrays.stream(child).forEach(this::add);
+    }
+
+    @Override
+    public Iterator<JsonNode<?>> iterator() {
+        return this.obj.iterator();
+    }
+
+    @Override
+    public ArrayNode asTypeNode() {
+        return this;
+    }
+
+    @Override
+    public ArrayNode copy() {
+        return new ArrayNode(new ArrayList<>(this.obj));
     }
 }

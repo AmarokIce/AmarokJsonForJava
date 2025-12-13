@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @SuppressWarnings({"unused", "rawtypes", "unchecked"})
-public class JsonNode<T> implements NodeLike {
+public class JsonNode<T> implements NodeLike, Cloneable {
     protected final T obj;
 
     public JsonNode(T obj) {
@@ -184,6 +184,11 @@ public class JsonNode<T> implements NodeLike {
     @Override
     public JsonNode asJsonNode() {
         return this.asTypeNode();
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+      return this.copy();
     }
 
     public static JsonNode asJsonNodeOrEmpty(Object obj) {

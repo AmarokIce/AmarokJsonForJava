@@ -16,7 +16,7 @@ import java.util.List;
 public class Json5Builder {
     private final List<IJson5Bean> taskTable = new ArrayList<>();
 
-    public Json5Builder create() {
+    public static Json5Builder create() {
         return new Json5Builder();
     }
 
