@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"club.someoneice.json"},{"l":"club.someoneice.json.api"},{"l":"club.someoneice.json.api.exception"},{"l":"club.someoneice.json.node"},{"l":"club.someoneice.json.processor"}];updateSearchResults();
