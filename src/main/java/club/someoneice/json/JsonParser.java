@@ -120,6 +120,9 @@ public class JsonParser {
             if (stringStart) {
                 if (c != KEY_STRING) {
                     builder.append(c);
+                    if (c == '\\') {
+                        builder.append(charList[++i]);
+                    }
                     continue;
                 }
 
@@ -201,6 +204,9 @@ public class JsonParser {
             if (stringStart) {
                 if (c != KEY_STRING) {
                     builder.append(c);
+                    if (c == '\\') {
+                        builder.append(charList[++i]);
+                    }
                     continue;
                 }
 
