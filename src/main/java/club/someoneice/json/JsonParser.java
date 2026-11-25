@@ -293,7 +293,12 @@ public class JsonParser {
         if (number != null)
             switch (number) {
                 case Int:
+                  try {
                     return new IntegerNode(Integer.parseInt(str));
+                  } catch(NumberFormatException e) {
+                    return new LongNode(Long.parseLong(str));
+                  }
+                
                 case Float:
                     return new FloatNode(Float.parseFloat(str));
                 case Double:
